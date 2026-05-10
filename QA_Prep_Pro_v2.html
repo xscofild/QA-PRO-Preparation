@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>QA Prep Pro v2 — Serdar Kerimov</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* =================== THEME SYSTEM =================== */
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--bg4:#30363d;
+  --border:#30363d;--border2:#555;
+  --blue:#58a6ff;--green:#3fb950;--red:#f78166;
+  --yellow:#e3b341;--purple:#bc8cff;--orange:#db6d28;--teal:#39d353;
+  --text:#e6edf3;--text2:#8b949e;--text3:#484f58;
+  --card-bg:#161b22;--nav-bg:#0d1117;
+  --shadow:0 4px 24px rgba(0,0,0,.4);
+}
+[data-theme="light"]{
+  --bg:#f6f8fa;--bg2:#ffffff;--bg3:#f1f3f5;--bg4:#e9ecef;
+  --border:#d0d7de;--border2:#adb5bd;
+  --blue:#0969da;--green:#1a7f37;--red:#cf222e;
+  --yellow:#9a6700;--purple:#8250df;--orange:#bc4c00;--teal:#1a7f37;
+  --text:#1f2328;--text2:#656d76;--text3:#adb5bd;
+  --card-bg:#ffffff;--nav-bg:#ffffff;
+  --shadow:0 2px 12px rgba(0,0,0,.12);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden;transition:background .3s,color .3s}
+button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none}
+
+/* =================== NEW SECTIONS (v2) =================== */
+
+/* ONYX project styles */
+.onyx-arch{display:grid;gap:8px;grid-template-columns:1fr;margin-bottom:14px}
+@media(min-width:680px){.onyx-arch{grid-template-columns:1fr 1fr 1fr}}
+.onyx-layer{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:12px;border-top:3px solid var(--blue)}
+.onyx-layer.fe{border-top-color:var(--purple)}
+.onyx-layer.qa{border-top-color:var(--green)}
+.onyx-layer-ttl{font-weight:800;font-size:13px;margin-bottom:8px;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+.onyx-layer-list{font-size:12px;color:var(--text2);line-height:1.7}
+.onyx-layer-list b{color:var(--text)}
+
+.onyx-stage{background:var(--card-bg);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:10px;padding:14px;margin-bottom:9px}
+.onyx-stage.done{border-left-color:var(--green)}
+.onyx-stage.todo{border-left-color:var(--yellow)}
+.onyx-stage.next{border-left-color:var(--purple)}
+.onyx-stage-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px;flex-wrap:wrap}
+.onyx-stage-name{font-weight:800;font-size:14px}
+.onyx-stage-badge{font-size:9.5px;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:4px;font-weight:700;letter-spacing:.05em}
+.onyx-stage-badge.done{background:rgba(63,185,80,.15);color:var(--green)}
+.onyx-stage-badge.todo{background:rgba(227,179,65,.15);color:var(--yellow)}
+.onyx-stage-badge.next{background:rgba(188,140,255,.15);color:var(--purple)}
+.onyx-row{display:grid;grid-template-columns:90px 1fr;gap:10px;padding:7px 0;border-bottom:1px dashed var(--border);font-size:12.5px;line-height:1.55}
+@media(max-width:540px){.onyx-row{grid-template-columns:1fr;gap:2px}.onyx-row .onyx-row-k{margin-bottom:2px}}
+.onyx-row:last-child{border-bottom:none}
+.onyx-row-k{font-weight:700;color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em}
+.onyx-row-v{color:var(--text)}
+.onyx-row-v code{background:var(--bg3);padding:1px 5px;border-radius:3px;font-size:11.5px;font-family:'JetBrains Mono',monospace}
+
+.onyx-star{background:linear-gradient(135deg,rgba(63,185,80,.06),rgba(88,166,255,.06));border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px}
+.onyx-star-stage{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--border);align-items:flex-start}
+.onyx-star-stage:last-child{border-bottom:none}
+.onyx-star-letter{font-family:'JetBrains Mono',monospace;font-weight:900;font-size:22px;color:var(--green);min-width:32px;line-height:1}
+.onyx-star-body{font-size:13px;line-height:1.55}
+.onyx-star-body b{color:var(--text)}
+
+/* CHEAT CODE styles */
+.hero-power{background:linear-gradient(135deg,rgba(247,129,102,.08),rgba(188,140,255,.08));border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+.power-grid{display:grid;gap:10px;grid-template-columns:1fr;margin-bottom:14px}
+@media(min-width:600px){.power-grid{grid-template-columns:1fr 1fr}}
+.power-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:13px;border-top:3px solid var(--red)}
+.power-card.hulk{border-top-color:var(--green)}
+.power-card.iron{border-top-color:var(--yellow)}
+.power-card.strange{border-top-color:var(--purple)}
+.power-hero{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+.power-name{font-weight:800;font-size:15px;margin-bottom:6px}
+.power-desc{font-size:12.5px;color:var(--text2);line-height:1.55}
+.power-desc b{color:var(--text)}
+
+.formula{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px}
+.formula-step{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--border);align-items:flex-start}
+.formula-step:last-child{border-bottom:none}
+.formula-num{font-family:'JetBrains Mono',monospace;font-weight:900;font-size:18px;color:var(--blue);line-height:1.2}
+.formula-name{font-weight:700;font-size:13px;margin-bottom:3px}
+.formula-explain{font-size:12px;color:var(--text2);line-height:1.55}
+
+/* PLAN styles */
+.plan-week{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;border-left:3px solid var(--blue)}
+.plan-week.w1{border-left-color:var(--red)}
+.plan-week.w2{border-left-color:var(--orange)}
+.plan-week.w3{border-left-color:var(--yellow)}
+.plan-week.w4{border-left-color:var(--green)}
+.plan-wk-hdr{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.plan-wk-num{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--text3);font-weight:700}
+.plan-wk-name{font-weight:800;font-size:15px}
+.plan-day{display:grid;grid-template-columns:60px 1fr;gap:10px;padding:6px 0;border-bottom:1px dashed var(--border);font-size:12.5px;line-height:1.55}
+@media(max-width:540px){.plan-day{grid-template-columns:50px 1fr;gap:8px}}
+.plan-day:last-child{border-bottom:none}
+.plan-day-n{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;color:var(--blue)}
+.plan-day-t b{color:var(--text)}
+
+/* RESOURCES styles */
+.res-block{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:8px;border-left:3px solid var(--blue)}
+.res-block.tier1{border-left-color:var(--red)}
+.res-block.tier2{border-left-color:var(--yellow)}
+.res-block.tier3{border-left-color:var(--green)}
+.res-name{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.res-name-t{font-weight:800;font-size:14px}
+.res-name-tag{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3);letter-spacing:.05em}
+.res-desc{font-size:12.5px;color:var(--text2);line-height:1.55}
+.res-desc b{color:var(--text)}
+.res-link{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--blue);margin-top:5px;display:block;font-style:italic}
+
+.res-group-ttl{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue);letter-spacing:.08em;font-weight:700;margin:18px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border);text-transform:uppercase}
+.res-group-ttl:first-of-type{margin-top:4px}
+.hdr{
+  background:var(--bg2);border-bottom:2px solid var(--border);
+  padding:10px 16px;position:sticky;top:0;z-index:300;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:var(--shadow);
+}
+.hdr-logo{font-weight:900;font-size:16px;color:var(--blue);white-space:nowrap;letter-spacing:-.5px}
+.hdr-logo span{color:var(--text2);font-weight:500}
+.hdr-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.hdr-prog{min-width:100px}
+.prog-track{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--green);border-radius:3px;transition:width .4s}
+.prog-txt{font-size:10px;color:var(--text2);font-family:'JetBrains Mono',monospace;margin-top:2px;text-align:right}
+.theme-btn{
+  width:34px;height:34px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text);font-size:16px;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;
+}
+.theme-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+/* =================== NAV =================== */
+.nav{
+  background:var(--nav-bg);border-bottom:1px solid var(--border);
+  padding:0 6px;display:flex;gap:1px;overflow-x:auto;
+  scrollbar-width:none;position:sticky;top:55px;z-index:200;
+}
+.nav::-webkit-scrollbar{display:none}
+.nb{
+  padding:9px 11px;font-size:11.5px;font-weight:700;color:var(--text2);
+  border-bottom:2px solid transparent;white-space:nowrap;
+  transition:all .15s;display:flex;align-items:center;gap:4px;
+  letter-spacing:.01em;
+}
+.nb:hover{color:var(--text)}
+.nb.on{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* =================== MAIN =================== */
+.main{padding:14px;max-width:980px;margin:0 auto}
+.sec{display:none;animation:fi .2s ease}
+.sec.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* =================== TYPOGRAPHY =================== */
+.ttl{font-size:19px;font-weight:800;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.sub{color:var(--text2);font-size:12px;margin-bottom:14px;line-height:1.5}
+
+/* =================== PILLS =================== */
+.pills{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.pill{
+  padding:4px 11px;border-radius:20px;font-size:11.5px;font-weight:600;
+  border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .15s;
+}
+.pill:hover{border-color:var(--blue);color:var(--blue)}
+.pill.on{background:var(--blue);border-color:var(--blue);color:#fff}
+[data-theme="light"] .pill.on{color:#000}
+
+/* =================== CARDS =================== */
+.card{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:10px;padding:13px;margin-bottom:8px;
+  transition:border-color .15s;
+}
+.card:hover{border-color:var(--border2)}
+
+/* =================== FLASHCARDS =================== */
+.fc-grid{display:grid;gap:8px;grid-template-columns:1fr}
+@media(min-width:580px){.fc-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.fc-grid{grid-template-columns:1fr 1fr 1fr}}
+.fc{
+  background:var(--card-bg);border:1px solid var(--border);border-radius:10px;
+  cursor:pointer;overflow:hidden;transition:all .15s;min-height:100px;
+}
+.fc:hover{border-color:var(--blue);transform:translateY(-1px);box-shadow:0 4px 12px rgba(88,166,255,.15)}
+.fc-q{padding:12px;display:flex;flex-direction:column;justify-content:space-between;min-height:100px}
+.fc-cat{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--text3);background:var(--bg3);padding:2px 6px;border-radius:4px;width:fit-content;margin-bottom:7px}
+.fc-qtxt{font-size:13px;font-weight:600;line-height:1.45}
+.fc-hint{font-size:10px;color:var(--text3);margin-top:6px}
+.fc-a{display:none;padding:12px;border-top:1px solid var(--border);background:var(--bg3);font-size:12.5px;line-height:1.6;animation:fi .15s}
+.fc.open .fc-a{display:block}
+.fc-open{border-color:var(--blue)!important}
+
+/* =================== QUIZ =================== */
+.qz-meta{font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace;margin-bottom:10px;display:flex;justify-content:space-between}
+.qz-q{font-size:14px;font-weight:700;line-height:1.5;margin-bottom:12px;padding:14px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px}
+.qz-opts{display:flex;flex-direction:column;gap:6px}
+.qz-opt{
+  padding:10px 13px;border-radius:8px;border:1px solid var(--border);
+  background:var(--card-bg);color:var(--text);font-size:13px;text-align:left;
+  display:flex;gap:9px;align-items:flex-start;transition:all .15s;
+}
+.qz-opt:hover:not(:disabled){border-color:var(--blue);background:rgba(88,166,255,.06)}
+.qz-opt.ok{border-color:var(--green);background:rgba(63,185,80,.1)}
+.qz-opt.no{border-color:var(--red);background:rgba(247,129,102,.1)}
+.qz-opt:disabled{cursor:default}
+.qz-ltr{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;width:19px;height:19px;border-radius:4px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.qz-exp{margin-top:9px;padding:10px;border-radius:8px;background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.2);font-size:12.5px;line-height:1.6;display:none}
+.qz-exp.show{display:block}
+.qz-next{margin-top:9px;padding:8px 16px;border-radius:8px;background:var(--blue);color:#fff;font-weight:700;font-size:13px;display:none}
+[data-theme="light"] .qz-next{color:#000}
+.qz-next.show{display:inline-block}
+.qz-score{text-align:center;padding:28px 14px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px}
+.score-big{font-size:56px;font-weight:900;color:var(--green);display:block;line-height:1}
+.qz-restart{margin-top:12px;padding:9px 20px;border-radius:8px;background:var(--blue);color:#fff;font-weight:700;font-size:13px}
+[data-theme="light"] .qz-restart{color:#000}
+
+/* =================== CHEATSHEET =================== */
+.cs-block{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:7px;overflow:hidden}
+.cs-hdr{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:13px;transition:background .15s;border-left:3px solid transparent}
+.cs-hdr:hover{background:var(--bg3)}
+.cs-arr{transition:transform .2s;color:var(--text2);font-size:10px;display:inline-block}
+.cs-body{display:none;padding:13px;border-top:1px solid var(--border)}
+.cs-body.on{display:block}
+.def{padding:6px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:120px 1fr;gap:8px;font-size:12.5px}
+@media(max-width:480px){.def{grid-template-columns:1fr;gap:2px}}
+.def:last-child{border-bottom:none}
+.def-k{color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;padding-top:1px}
+.def-v{line-height:1.5}
+.code{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:11px;margin:7px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);line-height:1.8;overflow-x:auto;white-space:pre}
+
+/* =================== SCRIPTS =================== */
+.scr{background:var(--card-bg);border-left:3px solid var(--blue);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:9px}
+.scr-lbl{font-size:10px;color:var(--blue);font-family:'JetBrains Mono',monospace;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.scr-txt{font-size:12.5px;line-height:1.75}
+.scr-txt b{color:var(--yellow)}
+.scr-txt em{color:var(--green);font-style:normal;font-weight:600}
+
+/* =================== CHECKLIST =================== */
+.cl-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;align-items:flex-start;transition:opacity .2s}
+.cl-item:last-child{border-bottom:none}
+.cl-item.done{opacity:.4}
+.cl-box{width:20px;height:20px;border-radius:5px;border:2px solid var(--border2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.cl-item.done .cl-box{background:var(--green);border-color:var(--green)}
+.cl-item.done .cl-box::after{content:'✓';color:#000;font-size:11px;font-weight:900}
+.cl-txt{font-size:13px;line-height:1.45}
+.cl-pri{font-size:9.5px;font-family:'JetBrains Mono',monospace;margin-bottom:2px;font-weight:600}
+
+/* =================== STATS GRID =================== */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
+.stat{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.stat-n{font-size:26px;font-weight:900}
+.stat-l{font-size:10px;color:var(--text2);margin-top:2px;font-weight:600}
+
+/* =================== MARKET =================== */
+.sal{margin:7px 0}
+.sal-lbl{font-size:11.5px;color:var(--text2);display:flex;justify-content:space-between;margin-bottom:4px}
+.sal-bar{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.sal-fill{height:100%;border-radius:4px;transition:width 1s ease}
+
+/* =================== TOP10 =================== */
+.t10-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:7px;overflow:hidden}
+.t10-hdr{padding:11px 13px;font-weight:700;font-size:13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s;border-left:3px solid transparent}
+.t10-hdr:hover{background:var(--bg3)}
+.t10-body{display:none;padding:13px;border-top:1px solid var(--border)}
+.t10-body.on{display:block}
+.dq{padding:8px 0;border-bottom:1px solid var(--border);font-size:12.5px}
+.dq:last-child{border-bottom:none}
+.dq-q{font-weight:700;margin-bottom:4px;display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;line-height:1.4}
+.dq-a{color:var(--text2);line-height:1.55;font-size:12px;margin-top:3px}
+.fbadge{font-size:9.5px;font-family:'JetBrains Mono',monospace;padding:2px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0;font-weight:700}
+.fhot{background:rgba(247,129,102,.2);color:var(--red)}
+.fclassic{background:rgba(88,166,255,.2);color:var(--blue)}
+.ftrend{background:rgba(63,185,80,.2);color:var(--green)}
+
+/* =================== SKILLS MATRIX =================== */
+.skills-grid{display:grid;gap:8px;grid-template-columns:1fr}
+@media(min-width:600px){.skills-grid{grid-template-columns:1fr 1fr}}
+.skill-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:12px;border-left:3px solid var(--blue)}
+.skill-title{font-weight:700;font-size:13px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.skill-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;border-bottom:1px solid var(--border)}
+.skill-item:last-child{border-bottom:none}
+.skill-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;font-family:'JetBrains Mono',monospace;white-space:nowrap;flex-shrink:0}
+.must{background:rgba(247,129,102,.2);color:var(--red)}
+.should{background:rgba(227,179,65,.2);color:var(--yellow)}
+.plus{background:rgba(63,185,80,.2);color:var(--green)}
+.wow{background:rgba(188,140,255,.2);color:var(--purple)}
+
+/* =================== COMPANIES =================== */
+.comp-grid{display:grid;gap:7px}
+@media(min-width:600px){.comp-grid{grid-template-columns:1fr 1fr}}
+.comp-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:12px}
+.comp-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.comp-flag{font-size:18px}
+.comp-name{font-weight:700;font-size:13px}
+.comp-type{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2)}
+.comp-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.ctag{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace}
+
+/* =================== TABS =================== */
+.tabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .15s}
+.tab:hover{border-color:var(--blue);color:var(--blue)}
+.tab.on{background:var(--blue);border-color:var(--blue);color:#fff}
+[data-theme="light"] .tab.on{color:#000}
+.tab-panel{display:none}
+.tab-panel.on{display:block}
+
+/* =================== RESPONSIVE =================== */
+@media(max-width:400px){
+  .stats{grid-template-columns:1fr 1fr}
+  .hdr-logo{font-size:14px}
+  .nb{font-size:11px;padding:8px 9px}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">QA Prep <span>Pro v2</span></div>
+  <div class="hdr-right">
+    <div class="hdr-prog">
+      <div class="prog-track"><div class="prog-fill" id="pFill" style="width:0%"></div></div>
+      <div class="prog-txt" id="pTxt">0/24</div>
+    </div>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Тема">🌙</button>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nb on" onclick="go('home')">🏠 Главная</button>
+  <button class="nb" onclick="go('onyx')">🎯 ONYX</button>
+  <button class="nb" onclick="go('cheat-code')">💎 Cheat Code</button>
+  <button class="nb" onclick="go('plan')">📅 План 4 нед</button>
+  <button class="nb" onclick="go('top10')">🔥 Топ 10 лет</button>
+  <button class="nb" onclick="go('skills')">🎯 Навыки</button>
+  <button class="nb" onclick="go('flash')">📋 Q&A</button>
+  <button class="nb" onclick="go('quiz')">🎮 Квиз</button>
+  <button class="nb" onclick="go('cheat')">📖 Шпаргалки</button>
+  <button class="nb" onclick="go('scripts')">🎤 Скрипты</button>
+  <button class="nb" onclick="go('resources')">📚 Ресурсы</button>
+  <button class="nb" onclick="go('companies')">🏢 Компании</button>
+  <button class="nb" onclick="go('chk')">✅ Чек-лист</button>
+  <button class="nb" onclick="go('market')">📊 Рынок</button>
+</div>
+
+<div class="main">
+
+<!-- HOME -->
+<div class="sec on" id="home">
+  <div class="ttl">👋 QA Prep Pro v2 — Serdar</div>
+  <div class="sub">Полная подготовка к Junior QA интервью. <b style="color:var(--green)">v2 обновление:</b> добавлен ONYX-проект, Cheat Code формула, 4-недельный план повторения, ресурсы (курсы + YouTube + сайты + работа).</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" style="color:var(--blue)">200+</div><div class="stat-l">вопросов</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--yellow)" id="sDone">0</div><div class="stat-l">изучено</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--green)" id="sPct">0%</div><div class="stat-l">готовность</div></div>
+  </div>
+
+  <!-- Honest snapshot -->
+  <div style="background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.25);border-radius:10px;padding:12px 14px;margin-bottom:10px">
+    <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:6px">✅ Твой текущий уровень — честно</div>
+    <div style="font-size:12px;line-height:1.65;color:var(--text2)">
+      <b style="color:var(--text)">Software QA Engineer</b> с фокусом на API Testing и UI Automation. Стек: <b style="color:var(--text)">Java 17 · RestAssured · Selenium · TestNG · SQL · JDBC</b>. Сильная зона — API (70+ test cases в Onyx, JWT helper, 11-vector DataProvider). Зоны роста — Selenium стабильность, Java глубина, CI/CD. Не Junior+, не Middle-ready — реалистично <b style="color:var(--text)">Junior QA готовый к first role в DE/EU</b>.
+    </div>
+  </div>
+
+  <div style="display:grid;gap:7px">
+    <div class="card" onclick="go('onyx')" style="cursor:pointer;border-left:3px solid var(--green)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">🎯 ONYX TaskTracker — твой проект <span style="background:var(--green);color:#000;font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px">NEW</span></div><div style="color:var(--text2);font-size:12px">BE/FE/QA архитектура, что сделал, как сделал, что улучшить. STAR-story для интервью.</div></div>
+    <div class="card" onclick="go('cheat-code')" style="cursor:pointer;border-left:3px solid var(--purple)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">💎 Cheat Code — формула ответа <span style="background:var(--purple);color:#fff;font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px">NEW</span></div><div style="color:var(--text2);font-size:12px">Универсальный шаблон ответа на любой interview вопрос. 5 шагов = чёткий ответ.</div></div>
+    <div class="card" onclick="go('plan')" style="cursor:pointer;border-left:3px solid var(--blue)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">📅 План повторения 4 недели <span style="background:var(--blue);color:#fff;font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px">NEW</span></div><div style="color:var(--text2);font-size:12px">Manual → API → Java/Selenium → SQL/Interview. День за днём.</div></div>
+    <div class="card" onclick="go('resources')" style="cursor:pointer;border-left:3px solid var(--orange)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">📚 Ресурсы — курсы + YouTube + сайты <span style="background:var(--orange);color:#fff;font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px">NEW</span></div><div style="color:var(--text2);font-size:12px">TAU курсы, лучшие YouTube каналы, интерактивные тренажёры, job-платформы DE/EU.</div></div>
+    <div class="card" onclick="go('top10')" style="cursor:pointer;border-left:3px solid var(--red)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">🔥 Топ вопросы за 10 лет</div><div style="color:var(--text2);font-size:12px">HOT/CLASSIC/TREND — что спрашивают 90%+ компаний.</div></div>
+    <div class="card" onclick="go('skills')" style="cursor:pointer;border-left:3px solid var(--green)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">🎯 Матрица навыков</div><div style="color:var(--text2);font-size:12px">MUST KNOW / SHOULD KNOW / PLUS / WOW — чёткий приоритет для Junior QA.</div></div>
+    <div class="card" onclick="go('flash')" style="cursor:pointer;border-left:3px solid var(--yellow)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">📋 Q&A 200+ карточек</div><div style="color:var(--text2);font-size:12px">Все темы курса: Manual, Selenium, Java, API, SQL, Git, Frontend, Python, Mobile, BDD, CI/CD</div></div>
+    <div class="card" onclick="go('quiz')" style="cursor:pointer;border-left:3px solid var(--red)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">🎮 Тест-квиз</div><div style="color:var(--text2);font-size:12px">4 варианта, объяснение, счёт. Фильтр по темам.</div></div>
+    <div class="card" onclick="go('cheat')" style="cursor:pointer;border-left:3px solid var(--purple)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">📖 Шпаргалки — 12 модулей</div><div style="color:var(--text2);font-size:12px">Код + команды + паттерны. Весь курс AIT TR компактно.</div></div>
+    <div class="card" onclick="go('scripts')" style="cursor:pointer;border-left:3px solid var(--orange)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">🎤 Скрипты RU/EN/DE</div><div style="color:var(--text2);font-size:12px">Готовые фразы для всех типичных вопросов. UpTeam, зарплата, баги.</div></div>
+    <div class="card" onclick="go('companies')" style="cursor:pointer;border-left:3px solid var(--blue)"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px">🏢 Топ компании</div><div style="color:var(--text2);font-size:12px">DE / EU / Международные. Что спрашивают, какой стек требуют.</div></div>
+  </div>
+</div>
+
+<!-- TOP10 -->
+<div class="sec" id="top10">
+  <div class="ttl">🔥 Топ вопросы — 10 лет</div>
+  <div class="sub">Вопросы с реальных интервью 2015–2026. Данные из 855+ Glassdoor интервью + 400 вакансий.</div>
+  <div id="top10Grid"></div>
+</div>
+
+<!-- SKILLS MATRIX -->
+<div class="sec" id="skills">
+  <div class="ttl">🎯 Матрица навыков Junior QA 2026</div>
+  <div class="sub">На основе анализа 400 вакансий, 855 интервью, трендов рынка DE/EU/Global.</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+    <span style="font-size:10px;padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-weight:700;background:rgba(247,129,102,.2);color:var(--red)">🔴 MUST</span>
+    <span style="font-size:10px;padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-weight:700;background:rgba(227,179,65,.2);color:var(--yellow)">🟡 SHOULD</span>
+    <span style="font-size:10px;padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-weight:700;background:rgba(63,185,80,.2);color:var(--green)">🟢 PLUS</span>
+    <span style="font-size:10px;padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-weight:700;background:rgba(188,140,255,.2);color:var(--purple)">⭐ WOW</span>
+    <span style="font-size:11px;color:var(--text2);align-self:center;margin-left:4px">Красный = потеряешь оффер без этого</span>
+  </div>
+  <div class="skills-grid" id="skillsGrid"></div>
+</div>
+
+<!-- COMPANIES -->
+<div class="sec" id="companies">
+  <div class="ttl">🏢 Топ компании для Junior QA</div>
+  <div class="sub">DE / Европа / Международные. Что спрашивают, какой стек, уровень зарплат.</div>
+  <div class="tabs">
+    <button class="tab on" onclick="showCompTab('de',this)">🇩🇪 Германия</button>
+    <button class="tab" onclick="showCompTab('eu',this)">🇪🇺 Европа</button>
+    <button class="tab" onclick="showCompTab('intl',this)">🌍 Международные</button>
+  </div>
+  <div class="tab-panel on" id="tc-de"><div class="comp-grid" id="comp-de"></div></div>
+  <div class="tab-panel" id="tc-eu"><div class="comp-grid" id="comp-eu"></div></div>
+  <div class="tab-panel" id="tc-intl"><div class="comp-grid" id="comp-intl"></div></div>
+</div>
+
+<!-- FLASHCARDS -->
+<div class="sec" id="flash">
+  <div class="ttl">📋 Вопросы & Ответы</div>
+  <div class="sub">Нажми карточку — увидишь ответ. Повторяй пока не отвечаешь без подсказки.</div>
+  <div class="pills" id="fcPills"></div>
+  <div id="fcCount" style="font-size:11px;color:var(--text2);margin-bottom:8px;font-family:'JetBrains Mono',monospace"></div>
+  <div class="fc-grid" id="fcGrid"></div>
+</div>
+
+<!-- QUIZ -->
+<div class="sec" id="quiz">
+  <div class="ttl">🎮 Тест-квиз</div>
+  <div class="sub">Отвечай как на реальном интервью.</div>
+  <div class="pills" id="qzPills"></div>
+  <div id="qzArea"></div>
+</div>
+
+<!-- CHEATSHEET -->
+<div class="sec" id="cheat">
+  <div class="ttl">📖 Шпаргалки</div>
+  <div class="sub">Весь материал курса по модулям.</div>
+  <div id="cheatArea"></div>
+</div>
+
+<!-- SCRIPTS -->
+<div class="sec" id="scripts">
+  <div class="ttl">🎤 Скрипты ответов</div>
+  <div class="sub">Готовые формулировки на RU/EN/DE.</div>
+  <div id="scriptsArea"></div>
+</div>
+
+<!-- CHECKLIST -->
+<div class="sec" id="chk">
+  <div class="ttl">✅ Чек-лист подготовки</div>
+  <div class="sub">Отмечай что знаешь. Прогресс сохраняется.</div>
+  <div id="chkArea"></div>
+</div>
+
+<!-- MARKET -->
+<div class="sec" id="market">
+  <div class="ttl">📊 Анализ рынка DE 2026</div>
+  <div class="sub">Реальные данные: зарплаты, тренды инструментов, стратегия поиска.</div>
+  <div id="marketArea"></div>
+</div>
+
+<!-- ============ NEW SECTIONS V2 ============ -->
+
+<!-- ONYX PROJECT -->
+<div class="sec" id="onyx">
+  <div class="ttl">🎯 ONYX TaskTracker — твой главный проект</div>
+  <div class="sub">Месячная Betriebliche Lernphase в UpTeam GmbH. Spring Boot + MySQL + React с JWT-авторизацией. Это твоя главная история на интервью.</div>
+
+  <!-- Architecture overview -->
+  <div class="res-group-ttl">⚙️ Архитектура — три репозитория</div>
+  <div class="onyx-arch">
+    <div class="onyx-layer">
+      <div class="onyx-layer-ttl" style="color:var(--blue)">📦 onyx-be</div>
+      <div class="onyx-layer-list">
+        <b>Backend</b> — Spring Boot 3, Spring Security, JWT (HttpOnly cookies), JPA, MySQL 8 на Docker. <br>База пакетов: <code>de.upteams.tasktracker</code>. Endpoints: auth, users, projects, tasks.
+      </div>
+    </div>
+    <div class="onyx-layer fe">
+      <div class="onyx-layer-ttl" style="color:var(--purple)">🎨 onyx-fe</div>
+      <div class="onyx-layer-list">
+        <b>Frontend</b> — Vite + React, общается с BE через REST API. JWT хранится в HttpOnly cookie (не localStorage — это важно для безопасности).
+      </div>
+    </div>
+    <div class="onyx-layer qa">
+      <div class="onyx-layer-ttl" style="color:var(--green)">🧪 onyx-qa</div>
+      <div class="onyx-layer-list">
+        <b>QA репо</b> — Java 17, Gradle, TestNG, Selenium WebDriver, RestAssured, JDBC, HikariCP. <br>База пакетов: <code>de.ait.taskTracker</code>. API + UI + DB слои.
+      </div>
+    </div>
+  </div>
+
+  <!-- What was DONE -->
+  <div class="res-group-ttl">✅ Что было сделано</div>
+
+  <div class="onyx-stage done">
+    <div class="onyx-stage-hdr">
+      <div class="onyx-stage-name">🔌 API Layer — RestAssured + TestNG</div>
+      <span class="onyx-stage-badge done">DONE</span>
+    </div>
+    <div class="onyx-row"><div class="onyx-row-k">ЧТО</div><div class="onyx-row-v">70+ test cases на endpoints <code>/auth</code>, <code>/users</code>, <code>/projects</code>, <code>/tasks</code> — позитивные, негативные, валидация.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">КАК</div><div class="onyx-row-v">DTO классы (<code>AuthRequestDto.builder()</code>), helper layer для переиспользования JWT access/refresh токенов через HttpOnly cookies, endpoint client покрывающий все flows.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">ЗАЧЕМ</div><div class="onyx-row-v">Чтобы не повторять auth-логику в каждом тесте — один раз настроил, переиспользуешь. Стандартный production-pattern.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">FLAGSHIP</div><div class="onyx-row-v">Data-driven negative tests на 11 невалидных паролей через <code>CSV + @DataProvider</code> — один метод проверяет 11 вариантов автоматически.</div></div>
+  </div>
+
+  <div class="onyx-stage done">
+    <div class="onyx-stage-hdr">
+      <div class="onyx-stage-name">🖥️ UI Layer — Selenium + POM</div>
+      <span class="onyx-stage-badge done">DONE</span>
+    </div>
+    <div class="onyx-row"><div class="onyx-row-k">ЧТО</div><div class="onyx-row-v">Page Object Model для LoginPage, RegisterPage, HeaderPage, ProjectsPage. BasePage с общими waits и alert handling.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">КАК</div><div class="onyx-row-v"><code>@FindBy</code> локаторы внутри страниц, action methods отдельно от локаторов, link verification через broken-link check.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">ЗАЧЕМ</div><div class="onyx-row-v">UI меняется чаще всего — POM позволяет править один файл вместо десяти тестов. Это база любого UI фреймворка.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">FLAGSHIP</div><div class="onyx-row-v">E2E flow test: <code>login → create project → verify across UI and API layers</code> — это уже не курсовая работа.</div></div>
+  </div>
+
+  <div class="onyx-stage done">
+    <div class="onyx-stage-hdr">
+      <div class="onyx-stage-name">🗄️ DB Layer — JDBC + MySQL</div>
+      <span class="onyx-stage-badge done">DONE</span>
+    </div>
+    <div class="onyx-row"><div class="onyx-row-k">ЧТО</div><div class="onyx-row-v">Валидация состояния БД через JDBC после API/UI операций. UUID HEX confirm-code lookup. Parameterized cleanup через <code>DELETE</code> с <code>PreparedStatement</code>.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">КАК</div><div class="onyx-row-v"><code>DriverManager</code> + <code>PreparedStatement</code> (защита от SQL injection). HikariCP убрали из build.gradle — оказался лишним для текущего объёма тестов.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">ЗАЧЕМ</div><div class="onyx-row-v">API может вернуть 200 OK а в БД ничего не записалось — без DB-валидации это не поймаешь. Это уровень выше "UI клацал, не упало".</div></div>
+  </div>
+
+  <div class="onyx-stage done">
+    <div class="onyx-stage-hdr">
+      <div class="onyx-stage-name">🐞 3 задокументированных бага с HTTP root cause</div>
+      <span class="onyx-stage-badge done">DONE</span>
+    </div>
+    <div class="onyx-row"><div class="onyx-row-k">BUG-001</div><div class="onyx-row-v"><b>401 auth-wide</b> — config typo в application.yml ломал весь auth-слой. Поймал на уровне HTTP headers через Fiddler.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">BUG-002</div><div class="onyx-row-v"><b>InvalidArgumentException</b> в UI suite — пустой <code>driver.get("")</code> валил test runner. Поправил через explicit URL validation.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">BUG-003</div><div class="onyx-row-v"><b>Token-pair mismatch</b> — split auth requests ломали refresh flow. 401 не из-за пароля, а из-за рассинхрона access/refresh пары.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">ВЫВОД</div><div class="onyx-row-v">Все три бага — на HTTP-уровне (status codes, cookies, headers). Это редкость для junior — обычно баги на UI-уровне ("кнопка не нажалась").</div></div>
+  </div>
+
+  <div class="onyx-stage done">
+    <div class="onyx-stage-hdr">
+      <div class="onyx-stage-name">📋 Process & Team</div>
+      <span class="onyx-stage-badge done">DONE</span>
+    </div>
+    <div class="onyx-row"><div class="onyx-row-k">TRELLO</div><div class="onyx-row-v">QA / BE / FE / BUG columns. Каждый ticket с шагами reproduction и severity.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">DOCS</div><div class="onyx-row-v">Написал <code>ONBOARDING.md</code> для следующего стажёра: 6-step Docker → BE → Beekeeper → FE → test user → Gradle checklist.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">TOOLS</div><div class="onyx-row-v">IntelliJ IDEA Ultimate, Docker Desktop, Beekeeper Studio (MySQL), Postman, Swagger UI, Chrome DevTools, Fiddler Classic.</div></div>
+  </div>
+
+  <!-- What to improve -->
+  <div class="res-group-ttl">🟡 Что ещё нужно сделать (для роста)</div>
+
+  <div class="onyx-stage next">
+    <div class="onyx-stage-hdr">
+      <div class="onyx-stage-name">🚀 Стабилизация API framework</div>
+      <span class="onyx-stage-badge next">NEXT</span>
+    </div>
+    <div class="onyx-row"><div class="onyx-row-k">RequestSpec</div><div class="onyx-row-v">Вынести base URI, common headers, auth в <code>RequestSpecification</code> — сейчас дублируется в каждом тесте.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">Schema</div><div class="onyx-row-v">Добавить JSON Schema validation — сейчас проверяешь поля вручную, schema validation поймает structural changes автоматически.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">Reporting</div><div class="onyx-row-v">Подключить <b>Allure Report</b> — нормальный HTML отчёт с историей запусков и скриншотами при падении.</div></div>
+  </div>
+
+  <div class="onyx-stage next">
+    <div class="onyx-stage-hdr">
+      <div class="onyx-stage-name">⚙️ CI/CD — GitHub Actions</div>
+      <span class="onyx-stage-badge next">NEXT</span>
+    </div>
+    <div class="onyx-row"><div class="onyx-row-k">ЧТО</div><div class="onyx-row-v">Workflow <code>.github/workflows/qa.yml</code>: на каждый push в onyx-qa автоматически запускается Gradle suite, артефакты публикуются.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">ЗАЧЕМ</div><div class="onyx-row-v">На любом интервью спросят про CI/CD. Один зелёный workflow в репо = реальное evidence, а не разговоры про Jenkins.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">ВРЕМЯ</div><div class="onyx-row-v">Один выходной — от подключения до зелёной галочки. Самое выгодное вложение времени.</div></div>
+  </div>
+
+  <div class="onyx-stage todo">
+    <div class="onyx-stage-hdr">
+      <div class="onyx-stage-name">🔧 UI стабильность</div>
+      <span class="onyx-stage-badge todo">TODO</span>
+    </div>
+    <div class="onyx-row"><div class="onyx-row-k">Waits</div><div class="onyx-row-v">Убрать любые остатки <code>Thread.sleep()</code> — заменить на <code>WebDriverWait + ExpectedConditions</code>.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">Locators</div><div class="onyx-row-v">Перевести оставшиеся XPath в CSS Selectors где возможно — быстрее и стабильнее.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">Screenshots</div><div class="onyx-row-v">TestNG <code>ITestListener</code> с screenshot-on-failure — стандарт production-grade фреймворков.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">Parallel</div><div class="onyx-row-v">TestNG <code>parallel="methods"</code> + <code>ThreadLocal&lt;WebDriver&gt;</code> — для запуска suite в 3-4 раза быстрее.</div></div>
+  </div>
+
+  <!-- STAR Story -->
+  <div class="res-group-ttl">⭐ STAR-история для интервью — выучить наизусть</div>
+  <div class="onyx-star">
+    <div class="onyx-star-stage">
+      <div class="onyx-star-letter">S</div>
+      <div class="onyx-star-body"><b>Situation:</b> Месячная Betriebliche Lernphase в UpTeam GmbH на проекте Onyx TaskTracker — Spring Boot + MySQL + React приложение для управления задачами с JWT cookie-авторизацией. Работа в команде с разработчиками BE/FE.</div>
+    </div>
+    <div class="onyx-star-stage">
+      <div class="onyx-star-letter">T</div>
+      <div class="onyx-star-body"><b>Task:</b> Покрыть API и UI флоу автотестами, провести exploratory testing, документировать найденные дефекты с root cause анализом до HTTP-уровня.</div>
+    </div>
+    <div class="onyx-star-stage">
+      <div class="onyx-star-letter">A</div>
+      <div class="onyx-star-body"><b>Action:</b> Написал 70+ API test cases (auth/users/projects/tasks), построил JWT helper layer для переиспользования токенов через HttpOnly cookies, реализовал 11-вектор data-driven negative тесты через CSV + DataProvider, добавил JDBC валидацию состояния БД, написал E2E flow login → create project → verify across UI and API layers.</div>
+    </div>
+    <div class="onyx-star-stage">
+      <div class="onyx-star-letter">R</div>
+      <div class="onyx-star-body"><b>Result:</b> Зафиксировал 3 бага с HTTP-уровневым root cause (config typo → 401, empty driver.get → InvalidArgumentException, split auth requests → token mismatch). Написал ONBOARDING.md для следующего стажёра. Оставил стабильный test suite, готовый к расширению.</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(247,129,102,.08);border-left:3px solid var(--red);padding:12px;border-radius:8px;margin-top:10px">
+    <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:5px">💡 Главный приём на интервью</div>
+    <div style="font-size:12.5px;color:var(--text2);line-height:1.6">Когда спрашивают "расскажи про последний проект" — отвечаешь STAR за 90 секунд. Если спрашивают деталь (например "как делал auth?") — переключаешься на технический ответ через формулу Cheat Code. Это структура — она работает на любой компании.</div>
+  </div>
+</div>
+
+
+<!-- CHEAT CODE -->
+<div class="sec" id="cheat-code">
+  <div class="ttl">💎 Cheat Code — формула ответа на любой вопрос</div>
+  <div class="sub">Финальный шаблон. Любой технический вопрос → 5 шагов → чёткий ответ. После месяца практики ты отвечаешь как Doctor Strange: видишь все возможные варианты ответа и выбираешь лучший.</div>
+
+  <div class="hero-power">
+    <div style="font-weight:800;font-size:14px;margin-bottom:8px">🦸 Marvel-формула QA-инженера на интервью</div>
+    <div style="font-size:12.5px;color:var(--text2);line-height:1.6">Четыре режима мышления — ты переключаешься между ними в зависимости от вопроса. Это не философия, это рабочая модель.</div>
+  </div>
+
+  <div class="power-grid">
+    <div class="power-card">
+      <div class="power-hero">Режим 1</div>
+      <div class="power-name">🔥 Cyclops — Лазерный фокус</div>
+      <div class="power-desc">Видишь <b>термин</b> в вопросе и сразу выдаёшь точное определение в одну строку. Никаких "ну это типа...". Severity — <b>техническая критичность дефекта</b>. Точка. Это базовое определение, остальное — детали.</div>
+    </div>
+
+    <div class="power-card hulk">
+      <div class="power-hero">Режим 2</div>
+      <div class="power-name">💚 Hulk — Разрываешь на куски</div>
+      <div class="power-desc">Сложный вопрос ("как тестируешь API?") <b>разбиваешь на маленькие части</b>: auth flow, positive cases, negative cases, status codes, schema. Каждую часть отвечаешь отдельно — интервьюер видит структурное мышление.</div>
+    </div>
+
+    <div class="power-card iron">
+      <div class="power-hero">Режим 3</div>
+      <div class="power-name">⚡ Iron Man — Решаешь проблему</div>
+      <div class="power-desc">"Как бы ты протестировал X?" — даёшь <b>конкретный план</b>: выбрал бы технику (BVA + EP), написал бы N тест-кейсов, использовал бы Y инструмент, проверил бы Z побочные эффекты. Не теория — реальное решение.</div>
+    </div>
+
+    <div class="power-card strange">
+      <div class="power-hero">Режим 4</div>
+      <div class="power-name">🔮 Doctor Strange — Видишь все варианты</div>
+      <div class="power-desc">В конце ответа <b>добавляешь trade-off</b>: "сейчас сделал бы так, но если бы у нас был CI/CD — добавил бы schema validation". Это показывает что ты думаешь о системе, а не только о тесте.</div>
+    </div>
+  </div>
+
+  <div class="res-group-ttl">📐 Универсальная формула ответа — 5 шагов</div>
+  <div class="formula">
+    <div class="formula-step">
+      <div class="formula-num">1</div>
+      <div><div class="formula-name">ЧТО ЭТО</div><div class="formula-explain">Одна строка определения. <i>"Severity — техническая критичность дефекта для системы."</i></div></div>
+    </div>
+    <div class="formula-step">
+      <div class="formula-num">2</div>
+      <div><div class="formula-name">ЗАЧЕМ НУЖНО</div><div class="formula-explain">Use case в одно предложение. <i>"Нужно чтобы команда понимала какие баги бьют по системе сильнее всего."</i></div></div>
+    </div>
+    <div class="formula-step">
+      <div class="formula-num">3</div>
+      <div><div class="formula-name">КАК РАБОТАЕТ</div><div class="formula-explain">Короткая механика. <i>"4 уровня: Critical → Major → Minor → Trivial. Назначает QA при создании баг-репорта."</i></div></div>
+    </div>
+    <div class="formula-step">
+      <div class="formula-num">4</div>
+      <div><div class="formula-name">ПОЧЕМУ ИМЕННО ТАК (trade-off)</div><div class="formula-explain">Отличие от похожего понятия. <i>"Не путать с Priority — Priority это бизнес-срочность, не техническая."</i></div></div>
+    </div>
+    <div class="formula-step">
+      <div class="formula-num">5</div>
+      <div><div class="formula-name">ПРИМЕР ИЗ ONYX</div><div class="formula-explain">Твой реальный кейс. <i>"В Onyx был баг с config typo — 401 auth-wide, Severity Critical потому что всё приложение лежало."</i></div></div>
+    </div>
+  </div>
+
+  <div class="res-group-ttl">🎯 Примеры применения формулы</div>
+
+  <div class="onyx-stage">
+    <div class="onyx-stage-hdr">
+      <div class="onyx-stage-name">Вопрос: «Что такое POM?»</div>
+    </div>
+    <div class="onyx-row"><div class="onyx-row-k">1. ЧТО</div><div class="onyx-row-v">Page Object Model — паттерн где каждая страница приложения = отдельный Java-класс.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">2. ЗАЧЕМ</div><div class="onyx-row-v">Разделить логику теста и структуру UI — чтобы при изменении вёрстки не переписывать все тесты.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">3. КАК</div><div class="onyx-row-v">Локаторы и action methods внутри page-класса. Тест вызывает только методы — не знает про XPath/CSS.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">4. TRADE-OFF</div><div class="onyx-row-v">Альтернатива — линейные тесты с локаторами внутри. Это работает на 5 тестах, но при 50 становится кошмаром поддержки.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">5. ONYX</div><div class="onyx-row-v">В onyx-qa у меня LoginPage, RegisterPage, HeaderPage, ProjectsPage — каждая extends BasePage с общими waits.</div></div>
+  </div>
+
+  <div class="onyx-stage">
+    <div class="onyx-stage-hdr">
+      <div class="onyx-stage-name">Вопрос: «401 vs 403 — разница?»</div>
+    </div>
+    <div class="onyx-row"><div class="onyx-row-k">1. ЧТО</div><div class="onyx-row-v">Оба HTTP-коды отказа в доступе, но из разных причин.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">2. ЗАЧЕМ</div><div class="onyx-row-v">Сервер сообщает клиенту что именно не так — не залогинен или нет прав.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">3. КАК</div><div class="onyx-row-v"><b>401 Unauthorized</b> — токена нет или истёк (не аутентифицирован). <b>403 Forbidden</b> — токен есть, но прав на этот ресурс нет (не авторизован).</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">4. TRADE-OFF</div><div class="onyx-row-v">Запоминать так: 401 = «кто ты?», 403 = «знаю кто ты, но сюда нельзя».</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">5. ONYX</div><div class="onyx-row-v">У меня был BUG-001 с 401 auth-wide — оказался config typo. И BUG-003 с 401 на legit запрос — это уже был token-pair mismatch.</div></div>
+  </div>
+
+  <div class="res-group-ttl">🧠 Mental Triggers — что говорить когда не знаешь</div>
+  <div class="onyx-stage">
+    <div class="onyx-row"><div class="onyx-row-k">НЕ ЗНАЮ</div><div class="onyx-row-v"><b>Никогда не говори «не знаю» сухо.</b> Говори: «Не работал с этим напрямую, но по аналогии с X я бы предположил Y». Это показывает мышление а не пробел.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">ЗАБЫЛ</div><div class="onyx-row-v">«Дайте секунду подумать» — нормально. Молчание 3-5 секунд лучше неточного ответа.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">УТОЧНИ</div><div class="onyx-row-v">«Уточните контекст — вы про мобильное или веб?» — задавать встречные вопросы это не слабость, это профессионализм QA.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">КОНКРЕТНО</div><div class="onyx-row-v">Если интервьюер задал общий вопрос — сужай. «На примере Onyx я делал так:..» — конкретный пример всегда сильнее теории.</div></div>
+    <div class="onyx-row"><div class="onyx-row-k">ВЛОЖИ ВРЕМЯ</div><div class="onyx-row-v">Если 2+ собеседника — отвечай тому кто задал, но смотри периодически на всех. Это базовая social awareness.</div></div>
+  </div>
+</div>
+
+
+<!-- PLAN 4 WEEKS -->
+<div class="sec" id="plan">
+  <div class="ttl">📅 План повторения — 4 недели до интервью</div>
+  <div class="sub">Не учить заново — освежить термины и закрепить через практику. 1.5 часа в будни, 3 часа в выходные. Цель: к концу 4-й недели уверенно проходить mock interview.</div>
+
+  <div class="plan-week w1">
+    <div class="plan-wk-hdr">
+      <div>
+        <div class="plan-wk-num">— WEEK 1 —</div>
+        <div class="plan-wk-name">🧪 Manual QA + Test Design</div>
+      </div>
+      <span class="onyx-stage-badge done" style="background:rgba(247,129,102,.15);color:var(--red)">FOUNDATION</span>
+    </div>
+    <div class="plan-day"><div class="plan-day-n">Пн</div><div class="plan-day-t">SDLC vs STLC — фазы каждого. <b>Источник:</b> ISTQB Foundation v4.0 PDF, главы 1-2.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Вт</div><div class="plan-day-t">Test case vs Checklist vs Test Plan vs Test Strategy. <b>Сделать:</b> добавить 10 терминов в Anki.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Ср</div><div class="plan-day-t">Severity vs Priority — 2 конкретных примера. Verification vs Validation.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Чт</div><div class="plan-day-t">Smoke / Sanity / Regression / Retesting — разница и когда применять.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Пт</div><div class="plan-day-t">EP + BVA на примере поля «возраст 18-65» — проговорить вслух.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Сб</div><div class="plan-day-t">Decision Table + State Transition + Pairwise. <b>Применить:</b> построить Decision Table для login-формы Onyx.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Вс</div><div class="plan-day-t">30 manual QA вопросов на JavaTpoint — отвечать вслух по формуле Cheat Code.</div></div>
+  </div>
+
+  <div class="plan-week w2">
+    <div class="plan-wk-hdr">
+      <div>
+        <div class="plan-wk-num">— WEEK 2 —</div>
+        <div class="plan-wk-name">🔌 API · HTTP · RestAssured</div>
+      </div>
+      <span class="onyx-stage-badge done" style="background:rgba(219,109,40,.15);color:var(--orange)">YOUR STRENGTH</span>
+    </div>
+    <div class="plan-day"><div class="plan-day-n">Пн</div><div class="plan-day-t">HTTP methods + idempotency. <b>Источник:</b> developer.mozilla.org → Web/HTTP.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Вт</div><div class="plan-day-t">Status codes — все 2xx/4xx/5xx наизусть. 401 vs 403 vs 422 — разница.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Ср</div><div class="plan-day-t">Headers, Cookies, JWT structure (header.payload.signature). <b>Открой:</b> jwt.io и разбери токен из Onyx.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Чт</div><div class="plan-day-t">REST принципы — stateless, uniform interface, resource-based. Postman: collections, variables, auth, scripts.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Пт</div><div class="plan-day-t">RestAssured: <code>given/when/then</code>, RequestSpec, ResponseSpec. <b>Курс:</b> TAU REST Assured Lesson 1-2.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Сб</div><div class="plan-day-t"><b>Практика:</b> добавить JSON Schema validation в один тест onyx-qa. Серьёзный шаг.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Вс</div><div class="plan-day-t">DTO serialization/deserialization. DataProvider + CSV. 20 API вопросов из этого приложения.</div></div>
+  </div>
+
+  <div class="plan-week w3">
+    <div class="plan-wk-hdr">
+      <div>
+        <div class="plan-wk-num">— WEEK 3 —</div>
+        <div class="plan-wk-name">☕ Java · Selenium · POM</div>
+      </div>
+      <span class="onyx-stage-badge done" style="background:rgba(227,179,65,.15);color:var(--yellow)">CORE STACK</span>
+    </div>
+    <div class="plan-day"><div class="plan-day-n">Пн</div><div class="plan-day-t">Java OOP — 4 принципа. ArrayList vs LinkedList. <b>Источник:</b> Baeldung «Java Collections».</div></div>
+    <div class="plan-day"><div class="plan-day-n">Вт</div><div class="plan-day-t">Checked vs Unchecked exceptions. <code>==</code> vs <code>.equals()</code>. String vs StringBuilder.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Ср</div><div class="plan-day-t">TestNG: <code>@BeforeMethod</code> vs <code>@BeforeClass</code> — порядок исполнения. DataProvider. Soft vs Hard assertions.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Чт</div><div class="plan-day-t">Selenium locators — CSS vs XPath, что когда выбирать. <code>findElement</code> vs <code>findElements</code>.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Пт</div><div class="plan-day-t">Implicit vs Explicit wait — никогда не миксовать! StaleElementReferenceException — почему.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Сб</div><div class="plan-day-t"><b>Практика:</b> стабилизировать 1 flaky UI test в onyx-qa через WebDriverWait + ExpectedConditions.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Вс</div><div class="plan-day-t">POM архитектура — почему action methods отдельно от локаторов. 20 Selenium вопросов из квиза.</div></div>
+  </div>
+
+  <div class="plan-week w4">
+    <div class="plan-wk-hdr">
+      <div>
+        <div class="plan-wk-num">— WEEK 4 —</div>
+        <div class="plan-wk-name">🗄️ SQL · Git · Mock Interview</div>
+      </div>
+      <span class="onyx-stage-badge done" style="background:rgba(63,185,80,.15);color:var(--green)">FINAL POLISH</span>
+    </div>
+    <div class="plan-day"><div class="plan-day-n">Пн</div><div class="plan-day-t">SQL: INNER JOIN vs LEFT JOIN с примером. <b>Источник:</b> SQLBolt Lesson 6-8.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Вт</div><div class="plan-day-t">WHERE vs HAVING. GROUP BY с агрегатами. Найти дубликаты email — классика интервью.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Ср</div><div class="plan-day-t">Statement vs PreparedStatement (SQL injection!). Transactions, ACID. JDBC основы.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Чт</div><div class="plan-day-t">Git: merge vs rebase. Что делать при merge conflict. <b>Тренажёр:</b> learngitbranching.js.org.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Пт</div><div class="plan-day-t">STAR-история про Onyx — выучить наизусть. 90 секунд без запинки.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Сб</div><div class="plan-day-t"><b>Mock interview:</b> записать себя на видео 60 минут. Tell me about yourself + 20 технических вопросов.</div></div>
+    <div class="plan-day"><div class="plan-day-n">Вс</div><div class="plan-day-t">Посмотреть запись. Зафиксировать слабые места. Доработать формулировки.</div></div>
+  </div>
+
+  <div style="background:rgba(63,185,80,.08);border-left:3px solid var(--green);padding:13px;border-radius:8px;margin-top:14px">
+    <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:6px">✅ Результат после 4 недель</div>
+    <div style="font-size:12.5px;color:var(--text2);line-height:1.65">Ты отвечаешь на любой interview-вопрос за 30-60 секунд по формуле Cheat Code. Не плаваешь на терминах. Можешь рассказать STAR про Onyx с цифрами и примерами. Открываешь любую вакансию Junior QA в DE и понимаешь требования с первого прочтения.</div>
+  </div>
+</div>
+
+
+<!-- RESOURCES -->
+<div class="sec" id="resources">
+  <div class="ttl">📚 Ресурсы — Курсы · YouTube · Сайты · Работа</div>
+  <div class="sub">Всё что нужно для роста в одном месте. Отфильтровано из 4 AI-анализов — только то что реально работает.</div>
+
+  <!-- COURSES -->
+  <div class="res-group-ttl">🎓 Курсы — приоритет от важного к опциональному</div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">REST Assured — Test Automation University</span><span class="res-name-tag">≈ 3h · FREE</span></div>
+    <div class="res-desc">Твоя <b>сильная зона</b>, её нужно полировать а не учить заново. Курс даёт RequestSpec / ResponseSpec, сериализацию через DTO, schema validation и переиспользуемые helper-методы — именно то чего не хватает твоему onyx-qa.</div>
+    <span class="res-link">testautomationu.applitools.com</span>
+  </div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">Selenium WebDriver with Java — TAU</span><span class="res-name-tag">≈ 5h · FREE</span></div>
+    <div class="res-desc">UI у тебя <b>слабее API</b> и на интервью это частая зона провала: explicit vs implicit wait, XPath vs CSS, StaleElementReferenceException. Курс закроет waits, locators, frames, POM.</div>
+    <span class="res-link">testautomationu.applitools.com</span>
+  </div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">ISTQB Foundation Level v4.0 Syllabus</span><span class="res-name-tag">PDF · FREE</span></div>
+    <div class="res-desc">Не курс, а <b>официальный словарь</b> QA-терминологии. На интервью в Германии формулировки из ISTQB звучат правильнее любого блога — используй как справочник когда не помнишь точное определение.</div>
+    <span class="res-link">istqb.org → Downloads</span>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">Rest API Testing with REST Assured — Rahul Shetty</span><span class="res-name-tag">Udemy · €€</span></div>
+    <div class="res-desc">Когда TAU закроет основу, этот курс даёт <b>реальный end-to-end framework</b> с интеграцией Cucumber и Jenkins — то что можно положить в портфолио как полноценный проект.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">Complete SQL Bootcamp — Jose Portilla</span><span class="res-name-tag">Udemy · €€</span></div>
+    <div class="res-desc">Твой SQL застрял на SELECT и одном JOIN. Курс ведёт до advanced JOINs, GROUP BY с агрегациями и оконных функций — на любом QA-интервью в DE спросят INNER vs LEFT JOIN с примером.</div>
+  </div>
+
+  <div class="res-block tier3">
+    <div class="res-name"><span class="res-name-t">GitHub Actions — Maximilian Schwarzmüller</span><span class="res-name-tag">Udemy · €</span></div>
+    <div class="res-desc">Решит проблему CI/CD за выходные: прикрутишь workflow к onyx-qa, и в репо появится <b>зелёный значок успешного прогона</b> — это реальное CI evidence, не разговоры про Jenkins.</div>
+  </div>
+
+  <!-- YOUTUBE -->
+  <div class="res-group-ttl">📺 YouTube — каналы для повторения и обучения</div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">Automation Step by Step (Raghav Pal)</span><span class="res-name-tag">EN · Beginner-Mid</span></div>
+    <div class="res-desc">Видео по 10-15 минут на каждую конкретную тему: Selenium, RestAssured, Postman, JMeter, Git. <b>Идеально для фоновой прослушки</b> и быстрого освежения термина перед интервью.</div>
+  </div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">SDET-QA Automation Techie (Pavan)</span><span class="res-name-tag">EN · Mid</span></div>
+    <div class="res-desc">Java для тестировщиков и framework design — то место где у тебя реальный пробел между «пишу тесты» и «проектирую фреймворк». Плейлисты со 100+ interview-вопросами с разбором.</div>
+  </div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">Naveen AutomationLabs</span><span class="res-name-tag">EN · Mid-Advanced</span></div>
+    <div class="res-desc">Самый <b>глубокий канал</b> по RestAssured и Java OOP в QA-контексте. Один из немногих кто реально объясняет <i>почему так</i> а не просто <i>как</i>.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">The Testing Academy</span><span class="res-name-tag">EN · All</span></div>
+    <div class="res-desc">Разборы реальных вакансий, interview Q&A, советы по CV и LinkedIn. <b>Меньше кода, больше карьеры</b> — полезно когда начнёшь подавать на позиции.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">Hussein Nasser</span><span class="res-name-tag">EN · All</span></div>
+    <div class="res-desc">Backend-инженер простыми словами объясняет HTTP, TCP, JWT, cookies, REST. Закрывает теоретическую сторону <b>твоей самой сильной зоны</b>.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">Артём Русов QA</span><span class="res-name-tag">RU · All</span></div>
+    <div class="res-desc">Лучший QA-канал на русском со схемами и без воды. Особенно полезен плейлист с разбором interview-вопросов в DE/EU контексте.</div>
+  </div>
+
+  <!-- INTERACTIVE -->
+  <div class="res-group-ttl">🎮 Интерактивные тренажёры — без рекламы, бесплатно</div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">sqlbolt.com</span><span class="res-name-tag">SQL · FREE</span></div>
+    <div class="res-desc">Лучший в мире сайт для повторения SQL — проходишь урок и тут же решаешь задачи в браузере без установки. <b>Закроет JOIN-ы и GROUP BY за один вечер.</b></div>
+  </div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">codingbat.com/java</span><span class="res-name-tag">Java · FREE</span></div>
+    <div class="res-desc">Сотни маленьких задач на Java с автопроверкой: строки, массивы, циклы. Возвращает <b>пальцам "мышечную память"</b> Java-синтаксиса перед интервью.</div>
+  </div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">learngitbranching.js.org</span><span class="res-name-tag">Git · FREE</span></div>
+    <div class="res-desc">Визуальная игра-симулятор Git. После часа здесь понимаешь <b>branch, merge, rebase</b> лучше чем после месяца команд в терминале.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">jwt.io</span><span class="res-name-tag">JWT · FREE</span></div>
+    <div class="res-desc">Декодер JWT-токенов + объяснение структуры header.payload.signature. Открой и разбери реальный токен из Onyx — поймёшь раз и навсегда.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">reqres.in · jsonplaceholder.typicode.com</span><span class="res-name-tag">API · FREE</span></div>
+    <div class="res-desc">Готовые fake REST API для практики GET/POST/PUT/DELETE без поднятия своего бэкенда. Идеально для тренировки Postman и RestAssured.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">exercism.org/tracks/java</span><span class="res-name-tag">Java · FREE</span></div>
+    <div class="res-desc">Задачи на Java с возможностью получить <b>code review от живого ментора</b> бесплатно. Идеально когда хочешь чтобы кто-то указал на грязный код в твоих тестах.</div>
+  </div>
+
+  <!-- REFERENCES -->
+  <div class="res-group-ttl">📖 Справочники — открывать когда не знаешь термин</div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">developer.mozilla.org (MDN)</span><span class="res-name-tag">FREE</span></div>
+    <div class="res-desc">Единственный правильный источник по HTTP, cookies, headers, CORS, JSON. Не блог, а официальная документация веба.</div>
+  </div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">baeldung.com</span><span class="res-name-tag">FREE</span></div>
+    <div class="res-desc">Короткие статьи «what is X» по Java, TestNG, RestAssured. <b>Лучший справочник</b> по Java-стеку для QA — пишут практикующие инженеры.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">rest-assured.io · selenium.dev · testng.org</span><span class="res-name-tag">FREE</span></div>
+    <div class="res-desc">Официальные доки — всегда правильнее блогов. Использовать когда блоги дают противоречивые ответы.</div>
+  </div>
+
+  <!-- JOBS -->
+  <div class="res-group-ttl">🌍 Где искать работу — Германия и EU</div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">LinkedIn Jobs</span><span class="res-name-tag">главный канал DE/EU</span></div>
+    <div class="res-desc">70% входящих от рекрутеров в DE приходит сюда. <b>Фильтр "English" обязателен</b>, иначе утонешь в немецкоязычных JD. Профиль должен быть открыт для recruiter outreach.</div>
+  </div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">StepStone.de</span><span class="res-name-tag">DE-локальный</span></div>
+    <div class="res-desc">Самый объёмный немецкий job-board по QA. Много локальных вакансий которых нет на LinkedIn, но половина требует немецкий B2+.</div>
+  </div>
+
+  <div class="res-block tier1">
+    <div class="res-name"><span class="res-name-t">arbeitnow.com</span><span class="res-name-tag">English-only DE/EU</span></div>
+    <div class="res-desc">Агрегатор английских вакансий в DE/EU — <b>твой главный фильтр при A2 немецком</b>. Много стартапов и remote-friendly позиций где знание немецкого не критично.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">honeypot.io</span><span class="res-name-tag">developer-focused</span></div>
+    <div class="res-desc">Заполнил профиль один раз — компании <b>сами пишут</b> когда матчишься. Получаешь приглашения на собес вместо холодного apply.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">kununu.com · glassdoor.de</span><span class="res-name-tag">DE</span></div>
+    <div class="res-desc">Отзывы сотрудников + зарплаты + interview-questions <b>по конкретной компании</b> перед apply. Используй обязательно перед собесом.</div>
+  </div>
+
+  <div class="res-block tier2">
+    <div class="res-name"><span class="res-name-t">roadmap.sh/qa</span><span class="res-name-tag">карта навыков</span></div>
+    <div class="res-desc">Визуальная карта всех QA-навыков. <b>Видишь пробелы наглядно</b> — что знаешь, что нет, что приоритет.</div>
+  </div>
+
+  <!-- DAILY TOOLS -->
+  <div class="res-group-ttl">🧰 Daily tools — держи открытыми</div>
+  <div style="display:grid;gap:7px;grid-template-columns:1fr;margin-bottom:8px">
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12.5px"><b style="color:var(--blue)">jsoncrack.com</b> · визуализация JSON-ответов API в виде графа</div>
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12.5px"><b style="color:var(--blue)">regex101.com</b> · отладчик регулярок для locators и API validation</div>
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12.5px"><b style="color:var(--blue)">anki / quizlet</b> · флэшкарточки терминов с интервальным повторением</div>
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12.5px"><b style="color:var(--blue)">excalidraw.com</b> · рисовать схему архитектуры на собеседовании</div>
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12.5px"><b style="color:var(--blue)">pramp.com</b> · бесплатные mock interviews с реальными людьми</div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ==================== THEME ====================
+let isDark = localStorage.getItem('qa_theme') !== 'light';
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
+}
+function toggleTheme(){ isDark = !isDark; localStorage.setItem('qa_theme', isDark?'dark':'light'); applyTheme(); }
+applyTheme();
+
+// ==================== NAV ====================
+function go(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('on',b.getAttribute('onclick')===`go('${id}')`));
+  window.scrollTo(0,0);
+}
+
+// ==================== TOP10 DATA ====================
+const TOP10=[
+  {cat:'🧪 Manual QA — Вечная классика',color:'var(--green)',qs:[
+    {f:'HOT',q:'Что такое тест-кейс? Из каких частей состоит?',a:'ID + Название + Предусловия + Шаги + Ожидаемый результат + Фактический результат + Статус (Pass/Fail/Blocked/Skip) + Приоритет (Critical/High/Medium/Low). Задают на 95%+ интервью.'},
+    {f:'HOT',q:'Severity vs Priority — разница? Дай 2 конкретных примера.',a:'Severity=критичность. Priority=срочность. Пример 1: краш на странице 404 (Severity:Critical, Priority:Low — мало пользователей). Пример 2: опечатка имени CEO (Severity:Trivial, Priority:High — видят все). Задают ВСЕГДА с 2010.'},
+    {f:'HOT',q:'Bug Lifecycle — назови все статусы.',a:'New→Assigned→InProgress→Fixed→Retest→Closed. Дополнительные: Rejected (не баг), Reopened (не исправлен), Deferred (отложен), Duplicate. Спрашивают с 2012.'},
+    {f:'HOT',q:'Verification vs Validation — в чём разница?',a:'Verification: "строим систему правильно?" — проверка документов, требований, кода. Validation: "строим правильную систему?" — продукт соответствует потребностям пользователя. Задают с 2008.'},
+    {f:'CLASSIC',q:'Smoke / Regression / Sanity — разница.',a:'Smoke: 5-10 критичных "работает вообще?" (после деплоя). Regression: все тесты "не сломали старое?" (после изменений). Sanity: конкретный фикс работает (после патча).'},
+    {f:'CLASSIC',q:'STLC — что это? Назови 6 фаз.',a:'Software Testing Life Cycle: 1.Анализ требований 2.Планирование 3.Разработка тестов 4.Setup окружения 5.Выполнение 6.Closure (отчёт о закрытии). Спрашивают с 2011.'},
+    {f:'CLASSIC',q:'Что такое QA vs QC — разница?',a:'QA (Quality Assurance): проактивно — настройка процессов, стандартов, предотвращение дефектов. QC (Quality Control): реактивно — тестирование продукта, поиск дефектов. QA = процесс. QC = продукт.'},
+  ]},
+  {cat:'📐 Тест-дизайн — Спрашивают всегда',color:'var(--blue)',qs:[
+    {f:'HOT',q:'BVA — что это? Поле 18-65, что тестируем?',a:'Boundary Value Analysis. Граница ±1. Для 18-65: 17, 18, 65, 66. На границах программисты чаще всего делают ошибки (≥ vs >, < vs ≤). Задают на 100% интервью с тест-дизайном.'},
+    {f:'HOT',q:'Equivalence Partitioning — пример с Email.',a:'Делим данные на классы с одинаковым поведением. Email: {валидный: user@mail.com}, {без @: usermail.com}, {пустое: ""}, {только @: @mail.com}. Один тест из каждого класса.'},
+    {f:'CLASSIC',q:'Decision Table Testing — когда применять?',a:'Матрица комбинаций условий→действий. Когда поведение зависит от нескольких условий: скидка если (VIP=Yes) И (сумма>1000). Из курса Lesson 5-6. Задают с 2015.'},
+    {f:'CLASSIC',q:'State Transition Testing.',a:'Тестируем переходы между состояниями. Рисуем диаграмму: Active→Blocked→Deleted. Тестируем ВСЕ переходы включая невозможные (Active→Deleted без Blocked).'},
+    {f:'TREND',q:'Exploratory Testing — что, когда, как?',a:'Одновременное изучение+проектирование+выполнение. Без заранее написанных тест-кейсов. Применяют: новые фичи, legacy системы, time-box сессии. Набирает популярность — спрашивают с 2018.'},
+  ]},
+  {cat:'🤖 Selenium / Playwright / Cypress — ТРЕНД 2025',color:'var(--red)',qs:[
+    {f:'HOT',q:'Implicit vs Explicit wait. Что лучше и почему?',a:'Implicit: глобально для всех findElement (все или ничего). Explicit (WebDriverWait): конкретное условие для конкретного элемента. Explicit ВСЕГДА лучше. Thread.sleep() = НИКОГДА. Задают с 2013.'},
+    {f:'HOT',q:'POM — что это? Назови преимущества.',a:'Каждая страница = класс. Локаторы внутри. Тест = вызов методов. Плюсы: UI меняется = правим ОДИН файл (не все тесты), DRY, тест читается как сценарий. Задают с 2014.'},
+    {f:'HOT',q:'Selenium vs Playwright vs Cypress — разница и тренды.',a:'Selenium: enterprise, legacy, multi-language (Java/Python), #1 по количеству компаний. Playwright: БЫСТРЕЙШИЙ рост 2024-2026, Microsoft, авто-ожидания, кросс-браузер. Cypress: front-end разработчики, JS/TS, быстрый. 2025: Cypress 65%, Playwright 55%, Selenium 50% из 400 вакансий.'},
+    {f:'TREND',q:'Почему Playwright набирает популярность?',a:'Разработан Microsoft. Нативный API к браузеру (не WebDriver). Авто-ожидания (нет хрупких Sleep/Wait). Кросс-браузер (Chrome/Firefox/Safari/Edge) из коробки. Trace Viewer для дебаггинга. Multi-language (JS/TS/Python/Java). Быстрее Selenium.'},
+    {f:'TREND',q:'Что такое Selenide? Зачем использовать?',a:'Java-обёртка над Selenium. Умные авто-ожидания, $(".btn").click() вместо длинного WebDriverWait, авто-скриншот при падении, встроенные assert. Из курса Lesson 31-32. Selenium + Selenide = удобство.'},
+  ]},
+  {cat:'🔌 API Testing — 70% всех интервью 2025',color:'var(--purple)',qs:[
+    {f:'HOT',q:'HTTP методы — все 5 + идемпотентность.',a:'GET(читать,идемп.) POST(создать,НЕ идемп.) PUT(заменить полностью,идемп.) PATCH(обновить частично) DELETE(удалить,идемп.). Идемпотентный = повторный запрос = тот же результат. Postman #1 инструмент в 70% вакансий.'},
+    {f:'HOT',q:'Статус коды — все важные группы.',a:'2xx: 200 OK, 201 Created, 204 No Content. 4xx: 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict. 5xx: 500 Internal, 503 Unavailable. Спрашивают ВЕЗДЕ.'},
+    {f:'HOT',q:'401 vs 403 — конкретная разница + пример.',a:'401: токен не передан или просрочен (не аутентифицирован). 403: токен есть, нет прав (не авторизован). Пример: 401 = не залогинился. 403 = залогинился как user, пытаешься зайти в admin endpoint.'},
+    {f:'CLASSIC',q:'REST — основные принципы.',a:'Stateless (каждый запрос независим), Client-Server, Uniform Interface (стандарт методов), Resource-based (URL = ресурс), Cacheable. JSON — стандартный формат. С 2012.'},
+    {f:'TREND',q:'RestAssured vs Postman — когда что?',a:'Postman: ручное тестирование, быстрые проверки, Collections Runner. RestAssured: часть автоматизации в коде, TestNG интеграция, CI/CD pipeline. В 2025: API автоматизация всё важнее.'},
+  ]},
+  {cat:'🗄️ SQL — 70% вакансий требуют',color:'var(--teal)',qs:[
+    {f:'HOT',q:'Напиши запрос: пользователи 18+, по имени.',a:'SELECT * FROM users WHERE age > 18 ORDER BY name ASC; — базовый, задают всегда.'},
+    {f:'HOT',q:'INNER JOIN vs LEFT JOIN.',a:'INNER: только строки с совпадением в обеих таблицах. LEFT: все из левой + совпадения из правой (NULL если нет). SELECT u.name, o.product FROM users u LEFT JOIN orders o ON u.id = o.user_id;'},
+    {f:'HOT',q:'Найти дубликаты email — напиши запрос.',a:'SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1; — классика! Задают с 2012 на 60% интервью.'},
+    {f:'CLASSIC',q:'WHERE vs HAVING.',a:'WHERE: фильтр строк ДО GROUP BY. HAVING: фильтр групп ПОСЛЕ GROUP BY. WHERE нельзя с COUNT/SUM/AVG.'},
+  ]},
+  {cat:'🎭 BDD & Cucumber — Тренд в DE',color:'var(--orange)',qs:[
+    {f:'TREND',q:'BDD — что это? Given/When/Then.',a:'Behaviour Driven Development. Тесты на языке бизнеса, понятном всей команде. Given=начальное состояние. When=действие пользователя. Then=ожидаемый результат. С 2018 в 40%+ DE вакансий.'},
+    {f:'TREND',q:'.feature файл Cucumber — структура.',a:'Feature: Login → Scenario: Successful login → Given user on "/login" → When user enters "user@mail.com" and "pass" → Then sees dashboard. Язык Gherkin. Step Definitions в Java.'},
+  ]},
+  {cat:'⚙️ CI/CD / Jenkins / Docker — Обязательно знать',color:'var(--purple)',qs:[
+    {f:'TREND',q:'CI/CD — объясни простыми словами.',a:'CI: каждый push → авто-сборка → авто-тесты. CD: если OK → авто-деплой. Для QA: тесты запускаются автоматически, не вручную. В 60% вакансий 2025.'},
+    {f:'TREND',q:'Docker — зачем QA? Объясни в 2 предложениях.',a:'"Работает на моей машине" — больше не оправдание. Docker = изолированный контейнер = одинаковое окружение везде. Selenium Grid в Docker = параллельные тесты в Chrome+Firefox+Edge.'},
+  ]},
+  {cat:'📱 Mobile Testing — Растущий тренд',color:'var(--red)',qs:[
+    {f:'TREND',q:'Appium — что это, чем отличается от Selenium?',a:'Фреймворк для мобильных приложений. Selenium = веб. Appium = мобильные (Android/iOS). Использует WebDriver протокол. UIAutomator2 (Android), XCUITest (iOS). Из курса Lesson 20-21.'},
+    {f:'TREND',q:'ADB — что это, 3 команды.',a:'Android Debug Bridge. adb devices (список устройств), adb install app.apk (установить), adb logcat (логи в реальном времени). Из курса Lesson 19.'},
+  ]},
+];
+
+// ==================== SKILLS MATRIX ====================
+const SKILLS = [
+  {title:'🧪 Manual QA — БАЗА',color:'var(--green)',items:[
+    {l:'MUST',t:'Тест-кейсы + баг-репорты','d':'Структура, поля, заголовок баг-репорта'},
+    {l:'MUST',t:'Severity vs Priority','d':'Разница + 2 примера без подсказки'},
+    {l:'MUST',t:'BVA + Equivalence Partitioning','d':'Объяснить на примере поля 18-65'},
+    {l:'MUST',t:'Bug Lifecycle','d':'Все статусы по памяти'},
+    {l:'MUST',t:'Smoke / Regression / Sanity','d':'Когда каждый применяется'},
+    {l:'SHOULD',t:'Decision Tables + State Transition',d:'Decision Table, State Transition тестирование'},
+    {l:'SHOULD',t:'STLC — 6 фаз','d':'Software Testing Life Cycle'},
+    {l:'SHOULD',t:'QA vs QC','d':'Разница и примеры из практики'},
+    {l:'PLUS',t:'Exploratory Testing','d':'Time-boxing, чартеры, когда применять'},
+    {l:'PLUS',t:'Risk-based Testing','d':'Приоритизация тестов по рискам'},
+  ]},
+  {title:'🤖 Автоматизация — Selenium (БАЗА)',color:'var(--red)',items:[
+    {l:'MUST',t:'Selenium + Java + TestNG','d':'POM/VOM архитектура, локаторы, ожидания'},
+    {l:'MUST',t:'Implicit vs Explicit wait','d':'Разница, почему explicit лучше'},
+    {l:'MUST',t:'Локаторы — порядок предпочтения','d':'id > css > name > xpath. Почему?'},
+    {l:'MUST',t:'Page Object Model (POM)','d':'Что это, зачем, структура проекта'},
+    {l:'MUST',t:'@BeforeMethod / @AfterMethod','d':'TestNG lifecycle аннотации'},
+    {l:'SHOULD',t:'@DataProvider','d':'Параметризованные тесты'},
+    {l:'SHOULD',t:'Selenide','d':'Отличие от Selenium, синтаксис'},
+    {l:'PLUS',t:'Playwright (TypeScript)','d':'Тренд 2025-2026! Microsoft, авто-ожидания'},
+    {l:'PLUS',t:'Cypress (JavaScript)','d':'Фронтенд-тесты, DevTools интеграция'},
+    {l:'WOW',t:'Playwright + AI','d':'Self-healing tests, Copilot интеграция'},
+  ]},
+  {title:'🔌 API Testing',color:'var(--purple)',items:[
+    {l:'MUST',t:'HTTP методы + статус коды','d':'GET/POST/PUT/PATCH/DELETE + 2xx/4xx/5xx'},
+    {l:'MUST',t:'401 vs 403','d':'Конкретная разница с примером'},
+    {l:'MUST',t:'Postman','d':'Отправка запросов, Tests tab, переменные окружения'},
+    {l:'MUST',t:'JSON структура','d':'Чтение и понимание JSON ответов'},
+    {l:'SHOULD',t:'RestAssured','d':'Java библиотека для API автотестов'},
+    {l:'SHOULD',t:'Негативное API тестирование','d':'401/403/404/400 сценарии'},
+    {l:'PLUS',t:'Fiddler / Charles Proxy','d':'Перехват и анализ HTTPS трафика'},
+    {l:'PLUS',t:'GraphQL основы','d':'Альтернатива REST, запросы/мутации'},
+    {l:'WOW',t:'API performance тестирование','d':'k6, JMeter для нагрузки'},
+  ]},
+  {title:'🗄️ SQL',color:'var(--teal)',items:[
+    {l:'MUST',t:'SELECT + WHERE + ORDER BY','d':'Базовые запросы без подсказки'},
+    {l:'MUST',t:'INNER JOIN + LEFT JOIN','d':'Разница + написать пример'},
+    {l:'MUST',t:'GROUP BY + HAVING','d':'Агрегация + фильтр групп'},
+    {l:'SHOULD',t:'Дубликаты — найти запросом','d':'GROUP BY + HAVING COUNT(*) > 1'},
+    {l:'SHOULD',t:'UPDATE + DELETE с WHERE','d':'ВСЕГДА с WHERE!'},
+    {l:'PLUS',t:'Индексы основы','d':'Для чего, как ускоряют'},
+    {l:'WOW',t:'MongoDB/NoSQL основы','d':'Базовые операции, отличие от SQL'},
+  ]},
+  {title:'⚙️ DevOps для QA',color:'var(--blue)',items:[
+    {l:'MUST',t:'Git workflow','d':'pull→branch→add→commit→push→PR'},
+    {l:'MUST',t:'CI/CD концепция','d':'Что такое pipeline, зачем тестам'},
+    {l:'SHOULD',t:'Jenkins / GitHub Actions','d':'Запуск тестов в pipeline'},
+    {l:'SHOULD',t:'Docker основы','d':'Объяснить в 2 предложениях'},
+    {l:'PLUS',t:'Allure Reports','d':'@Step аннотация, история запусков'},
+    {l:'PLUS',t:'Selenium Grid','d':'Параллельные тесты, Hub+Node'},
+    {l:'WOW',t:'GitHub Actions pipeline','d':'Написать базовый workflow файл'},
+  ]},
+  {title:'📱 Mobile + BDD',color:'var(--orange)',items:[
+    {l:'SHOULD',t:'Appium основы','d':'Что это, WebDriver протокол, UIAutomator2'},
+    {l:'SHOULD',t:'ADB команды','d':'devices, install, logcat, shell'},
+    {l:'SHOULD',t:'BDD/Cucumber','d':'Feature файл, Step Definitions'},
+    {l:'SHOULD',t:'Gherkin синтаксис','d':'Given/When/Then/And/But'},
+    {l:'PLUS',t:'Appium Inspector','d':'Поиск мобильных локаторов'},
+    {l:'WOW',t:'Playwright мобильная эмуляция','d':'Mobile viewports, touch events'},
+  ]},
+];
+
+// ==================== COMPANIES ====================
+const COMPANIES = {
+  de: [
+    {flag:'🇩🇪',name:'SAP',type:'Enterprise Software',pay:'€42–52k',desc:'Крупнейший DE tech. Спрашивают: Java, JIRA, Agile, SQL, Selenium. Строгие процессы, много документации.',tags:['Java','Selenium','JIRA','Agile','SQL'],asks:'Тест-план, STLC фазы, баг-репорт структура, SQL запросы'},
+    {flag:'🇩🇪',name:'TeamViewer',type:'Remote Connectivity',pay:'€40–50k',desc:'Göppingen. Спрашивают: Selenium, TestNG, CI/CD, Postman. Хороший стартовый работодатель.',tags:['Selenium','TestNG','Jenkins','Postman'],asks:'POM, TestNG аннотации, API тестирование, Git workflow'},
+    {flag:'🇩🇪',name:'Zalando',type:'E-commerce / Tech',pay:'€45–58k',desc:'Berlin. Много QA вакансий. Спрашивают: Playwright/Cypress, TypeScript, BDD, CI/CD.',tags:['Playwright','TypeScript','BDD','Kubernetes'],asks:'Playwright vs Selenium, BDD сценарий, CI/CD pipeline'},
+    {flag:'🇩🇪',name:'Deutsche Bank',type:'FinTech',pay:'€44–54k',desc:'Frankfurt. Строгий процесс найма. Спрашивают: SQL, ручное тестирование, баг-репорты.',tags:['SQL','Manual QA','JIRA','Python'],asks:'SQL джойны, Severity/Priority, bug lifecycle'},
+    {flag:'🇩🇪',name:'AppLike / adjoe',type:'Mobile AdTech',pay:'€38–46k',desc:'Hamburg. Стартап. Спрашивают: Mobile testing, Appium, Python/Java, API.',tags:['Appium','Mobile','API','Python'],asks:'Мобильное vs веб тестирование, ADB, REST API'},
+    {flag:'🇩🇪',name:'MaibornWolff',type:'IT Consulting',pay:'€40–50k',desc:'München/Berlin. IT консалтинг. Нанимают джунов. BDD, Cucumber, Selenium.',tags:['Cucumber','BDD','Selenium','Java'],asks:'BDD концепция, feature файл, step definitions'},
+  ],
+  eu: [
+    {flag:'🇳🇱',name:'Booking.com',type:'Travel Tech',pay:'€45–60k',desc:'Amsterdam. TOP работодатель EU. Спрашивают: API, Python, Playwright. Сложный процесс.',tags:['Python','Playwright','API','PostgreSQL'],asks:'API тестирование, SQL сложные запросы, тест дизайн'},
+    {flag:'🇨🇿',name:'JetBrains',type:'Dev Tools',pay:'€38–50k',desc:'Prague/Remote. Инструменты разработчика. Спрашивают: Java/Kotlin, IntelliJ, Selenium.',tags:['Java','Kotlin','Selenium','TestNG'],asks:'Java ООП, POM паттерн, инструменты IDE'},
+    {flag:'🇵🇱',name:'Allegro',type:'E-commerce',pay:'€35–48k',desc:'Warsaw/Remote. Крупнейший EU e-commerce. Playwright/Cypress популярны.',tags:['Playwright','Cypress','Java','REST'],asks:'Playwright vs Selenium, REST API, CI/CD'},
+    {flag:'🇪🇪',name:'Pipedrive',type:'CRM / SaaS',pay:'€40–52k',desc:'Tallinn/Remote-friendly. Спрашивают: JavaScript, Cypress, API, BDD.',tags:['Cypress','JavaScript','REST API','BDD'],asks:'Cypress синтаксис, BDD, API автотесты'},
+    {flag:'🇸🇪',name:'Spotify',type:'Music / Tech',pay:'€50–65k',desc:'Stockholm. Труднее получить, но реально. Python, API, mobile testing.',tags:['Python','Mobile','API','Kubernetes'],asks:'Мобильное тестирование, API, тест пирамида'},
+    {flag:'🇳🇱',name:'TomTom',type:'Navigation / Maps',pay:'€43–55k',desc:'Amsterdam. Embedded + mobile QA. Спрашивают: Java, Mobile, Performance testing.',tags:['Java','Mobile','Appium','Performance'],asks:'Appium, мобильная специфика, нагрузочное тестирование'},
+  ],
+  intl: [
+    {flag:'🌍',name:'Google',type:'BigTech',pay:'€70–100k+',desc:'Сложный процесс. SDET роль. Спрашивают: кодинг, алгоритмы, системный дизайн. Junior очень редко.',tags:['Python','Java','Algorithms','System Design'],asks:'Кодинг задачи, алгоритмы, design patterns'},
+    {flag:'🌍',name:'Microsoft',type:'BigTech',pay:'€60–90k',desc:'Dublin/Remote. Playwright — их инструмент! Спрашивают: Playwright, TypeScript, Azure DevOps.',tags:['Playwright','TypeScript','Azure','C#'],asks:'Playwright (их инструмент!), TypeScript, CI/CD Azure'},
+    {flag:'🌍',name:'Atlassian',type:'Dev Tools',pay:'€55–75k',desc:'Remote-first. JIRA создатели! Спрашивают: JIRA, Confluence, Selenium/Playwright, Java.',tags:['JIRA','Confluence','Selenium','Java'],asks:'JIRA workflows, Agile методологии, автоматизация'},
+    {flag:'🌍',name:'Epam Systems',type:'IT Services',pay:'€38–52k',desc:'Remote/Poland/Ukraine. Нанимают МНОГО джунов. Java+Selenium основа.',tags:['Java','Selenium','TestNG','REST'],asks:'Java ООП, Selenium POM, TestNG, REST API'},
+    {flag:'🌍',name:'EPAM / GlobalLogic',type:'Outsourcing',pay:'€35–48k',desc:'Remote EU. Хороший вход для джунов. Стандартный стек Java+Selenium.',tags:['Java','Selenium','SQL','JIRA'],asks:'Базовые вопросы Manual+Automation, SQL'},
+    {flag:'🌍',name:'Wrike',type:'Project Management',pay:'€42–54k',desc:'Remote EU. Спрашивают: API testing, Playwright/Cypress, BDD, CI/CD.',tags:['Playwright','API','BDD','CI/CD'],asks:'API тестирование, Playwright, BDD, CI/CD интеграция'},
+  ],
+};
+
+// ==================== FLASHCARDS ====================
+const FC=[
+  // manual
+  {c:'manual',q:'Структура тест-кейса (все поля).',a:'ID + Название + Предусловия + Шаги + Ожидаемый результат + Фактический результат + Статус (Pass/Fail/Blocked/Skip) + Приоритет. Обязательны все поля.'},
+  {c:'manual',q:'Что такое чек-лист? Отличие от тест-кейса.',a:'Чек-лист — список проверок без детальных шагов. Быстрее создавать/выполнять. Тест-кейс — детальные шаги для регрессии. Чек-лист для smoke/sanity опытными тестировщиками.'},
+  {c:'manual',q:'Severity vs Priority — 2 примера.',a:'Краш на 404: Severity=Critical, Priority=Low. Опечатка CEO: Severity=Trivial, Priority=High. Severity=техническая критичность. Priority=бизнес срочность.'},
+  {c:'manual',q:'Bug Lifecycle все статусы.',a:'New→Assigned→InProgress→Fixed→Retest→Closed. + Rejected (не баг) / Reopened (не исправлен) / Deferred (отложен) / Duplicate.'},
+  {c:'manual',q:'BVA для поля 18-65.',a:'17 (ниже), 18 (нижняя граница), 65 (верхняя граница), 66 (выше). Опционально: середина 40. Именно на границах чаще всего ошибки операторов ≥ vs >.'},
+  {c:'manual',q:'Equivalence Partitioning для Email.',a:'{user@mail.com} = валидный. {usermail.com} = без @. {""} = пустое. {@mail.com} = только @. Один тест из каждого класса.'},
+  {c:'manual',q:'Smoke vs Regression vs Sanity.',a:'Smoke: 5-10 критичных после деплоя. Regression: все тесты после изменений. Sanity: конкретный фикс работает.'},
+  {c:'manual',q:'STLC 6 фаз.',a:'1.Анализ требований 2.Планирование 3.Разработка тестов 4.Setup окружения 5.Выполнение 6.Closure.'},
+  {c:'manual',q:'QA vs QC разница.',a:'QA: проактивно — настройка процессов, предотвращение дефектов. QC: реактивно — тестирование продукта, поиск дефектов.'},
+  {c:'manual',q:'Decision Table — зачем?',a:'Матрица: комбинации условий → действия системы. Когда поведение зависит от нескольких условий. Пример: скидка если VIP И сумма>1000.'},
+  {c:'manual',q:'State Transition тестирование.',a:'Тестируем переходы между состояниями. Диаграмма: Active→Blocked→Deleted. Тестируем все переходы включая невозможные.'},
+  {c:'manual',q:'Verification vs Validation.',a:'Verification: "строим правильно?" — документы, требования. Validation: "строим правильное?" — потребности пользователя.'},
+  // selenium
+  {c:'selenium',q:'Implicit vs Explicit wait. Что лучше?',a:'Implicit: глобально для всех findElement. Explicit: конкретное условие для конкретного элемента. Explicit ВСЕГДА лучше. Thread.sleep() = НИКОГДА.'},
+  {c:'selenium',q:'Порядок предпочтения локаторов.',a:'1) By.id (уникален) 2) By.cssSelector (быстрый+гибкий) 3) By.name (формы) 4) By.xpath (мощный но хрупкий). Избегать tagName, className.'},
+  {c:'selenium',q:'POM — зачем? Главное преимущество.',a:'Каждая страница = класс. Локаторы внутри. UI меняется = правим ОДИН файл. DRY принцип. Тест читается как сценарий.'},
+  {c:'selenium',q:'VOM структура — все слои.',a:'data/ (константы) → models/ (fluent setters) → core/BaseHelper (click/type/isPresent) → fw/Helpers (локаторы+методы) → AppManager (driver+helpers) → TestBase (@Before/@After) → Tests (AAA).'},
+  {c:'selenium',q:'AAA паттерн.',a:'Arrange (данные) → Act (действие) → Assert (проверка). Каждый тест по этому шаблону.'},
+  {c:'selenium',q:'findElement vs findElements.',a:'findElement: первый, NoSuchElementException если нет. findElements: List<WebElement>, пустой список если нет. Используй findElements для isElementPresent.'},
+  {c:'selenium',q:'Что такое Selenide? Плюсы.',a:'Java-обёртка над Selenium. Авто-ожидания, $(".btn").click(), авто-скриншот при падении. Из курса Lesson 31-32.'},
+  {c:'selenium',q:'@DataProvider TestNG.',a:'Поставляет данные в @Test. Один тест с разными наборами данных. Из курса Lesson 10, 21.'},
+  {c:'selenium',q:'Playwright vs Selenium — ключевые отличия.',a:'Playwright: нативный API к браузеру, авто-ожидания, кросс-браузер из коробки, Trace Viewer, быстрее. Selenium: WebDriver протокол, legacy поддержка, enterprise стандарт. Тренд 2025: Playwright растёт.'},
+  // java
+  {c:'java',q:'4 принципа ООП.',a:'Инкапсуляция (private+getters) Наследование (extends) Полиморфизм (разные реализации интерфейса) Абстракция (скрытие сложности).'},
+  {c:'java',q:'public / private / static / final.',a:'public: везде. private: только в классе. static: принадлежит классу (без new). final: нельзя переприсвоить. В QA: private final By BTN = By.id("...").'},
+  {c:'java',q:'Fluent setters — что и зачем?',a:'Сеттер возвращает this → цепочка: new User().setEmail("e").setPassword("p"). В models/ для тест-данных. Из курса урок 7.'},
+  {c:'java',q:'ArrayList vs HashMap.',a:'ArrayList: список, O(1) доступ по индексу. HashMap: ключ→значение, O(1) поиск по ключу. В тестах: List<WebElement> = ArrayList.'},
+  {c:'java',q:'Stream API filter + map + collect.',a:'list.stream().filter(x->x>0).map(x->x*2).collect(Collectors.toList()). Не изменяет оригинал. Из курса Lesson 35.'},
+  {c:'java',q:'try/catch/finally в тестах.',a:'isAlertPresent(): try{switchTo().alert(); return true} catch(NoAlertPresentException e){return false}. findElements безопаснее.'},
+  // api
+  {c:'api',q:'Все HTTP методы + идемпотентность.',a:'GET(читать,идемп.) POST(создать,НЕ идемп.) PUT(заменить,идемп.) PATCH(обновить частично) DELETE(удалить,идемп.). Идемпотентный = повторный запрос = тот же результат.'},
+  {c:'api',q:'Все важные статус коды.',a:'200 OK, 201 Created, 204 No Content. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable. 500 Server Error, 503 Unavailable.'},
+  {c:'api',q:'401 vs 403.',a:'401: токен не передан или просрочен. 403: токен есть, нет прав. Пример: 401 = не залогинился. 403 = залогинился как user → admin endpoint.'},
+  {c:'api',q:'Postman Tests tab — базовый пример.',a:'pm.test("OK",()=>pm.response.to.have.status(200)); pm.test("Has id",()=>pm.expect(pm.response.json().id).to.exist); pm.test("Fast",()=>pm.expect(pm.response.responseTime).below(1000));'},
+  {c:'api',q:'RestAssured синтаксис.',a:'given().header("Authorization","Bearer "+token).body(json).contentType(ContentType.JSON).when().post("/api/users").then().statusCode(201).body("id",notNullValue());'},
+  {c:'api',q:'Fiddler — зачем QA?',a:'Proxy-сниффер. Перехватывает HTTP/HTTPS трафик. Используем для: анализа запросов, дебаггинга, модификации запросов на лету. Из курса Lesson 33.'},
+  // sql
+  {c:'sql',q:'SELECT с WHERE и ORDER BY.',a:'SELECT name, email FROM users WHERE age > 18 AND active = 1 ORDER BY name ASC LIMIT 10;'},
+  {c:'sql',q:'INNER JOIN vs LEFT JOIN.',a:'INNER: только строки с совпадением. LEFT: все из левой + NULL справа. SELECT u.name, o.product FROM users u LEFT JOIN orders o ON u.id = o.user_id;'},
+  {c:'sql',q:'GROUP BY + HAVING.',a:'SELECT city, COUNT(*) as cnt FROM users GROUP BY city HAVING COUNT(*) > 5 ORDER BY cnt DESC;'},
+  {c:'sql',q:'WHERE vs HAVING.',a:'WHERE: фильтр ДО GROUP BY. HAVING: фильтр ПОСЛЕ GROUP BY. WHERE нельзя с COUNT/SUM/AVG.'},
+  {c:'sql',q:'Найти дубликаты.',a:'SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1; — классика!'},
+  {c:'sql',q:'UPDATE и DELETE — главное правило.',a:'ВСЕГДА с WHERE! UPDATE users SET age=26 WHERE id=5; DELETE FROM users WHERE id=5; Без WHERE = изменишь/удалишь ВСЕ строки!'},
+  // git
+  {c:'git',q:'Типичный Git workflow.',a:'git pull → git checkout -b feature-name → изменения → git status → git add . → git commit -m "feat: desc" → git push origin feature → Pull Request.'},
+  {c:'git',q:'git merge vs git rebase.',a:'merge: сохраняет историю с ветками, merge-commit. rebase: линейная история, изменяет хэши. Для junior: merge безопаснее.'},
+  {c:'git',q:'git stash.',a:'Временно сохраняет незакоммиченные изменения. git stash=сохранить. git stash pop=восстановить. Когда нужно срочно переключить ветку.'},
+  // frontend
+  {c:'frontend',q:'HTML/CSS/JS роли.',a:'HTML: структура. CSS: стили. JS: поведение. Семантика: header/nav/main/section/footer вместо div.'},
+  {c:'frontend',q:'CSS Box Model.',a:'width+padding+border+margin. box-sizing:border-box включает padding+border в width. Рекомендуется всегда.'},
+  {c:'frontend',q:'let vs const vs var.',a:'const: нельзя переприсвоить (по умолчанию). let: можно. var: устаревший. Правило: всегда const → let → var НИКОГДА.'},
+  {c:'frontend',q:'async/await.',a:'async функция + await для Promise. const res = await fetch(url); const json = await res.json(); Не блокирует поток. Из курса Lesson 14-16.'},
+  {c:'frontend',q:'DOM операции.',a:'document.querySelector(".btn") .getElementById("id") .textContent = "text" .classList.toggle("active") .addEventListener("click", fn)'},
+  // python
+  {c:'python',q:'Основные типы Python.',a:'int, float, str, bool, list[], dict{}, tuple(), set{}, None. Python сам определяет тип.'},
+  {c:'python',q:'List comprehension.',a:'[x*2 for x in range(10) if x > 3] — краткий синтаксис. Pythonic стиль.'},
+  {c:'python',q:'f-строки.',a:'f"Меня зовут {name}, мне {age} лет". Выражения: f"{2+2}". Python 3.6+.'},
+  {c:'python',q:'Запрос API на Python.',a:'import requests; res = requests.get(url, headers={"Auth":"Bearer "+token}); assert res.status_code == 200; data = res.json()'},
+  // mobile
+  {c:'mobile',q:'Нативное vs Гибридное vs Веб.',a:'Native: Swift/Kotlin, лучшая производительность. Hybrid: WebView в контейнере. Web: браузер на устройстве. Каждый тип — разный подход к тестированию.'},
+  {c:'mobile',q:'ADB основные команды.',a:'adb devices | adb install app.apk | adb logcat (логи) | adb shell (терминал) | adb pull/push (файлы).'},
+  {c:'mobile',q:'Специфика мобильного тестирования.',a:'Прерывания (звонки), разные экраны/ОС, жесты (swipe/pinch), батарея, ориентация portrait/landscape, offline, push notifications.'},
+  {c:'mobile',q:'Appium — что это?',a:'WebDriver для мобильных. UIAutomator2 (Android), XCUITest (iOS). Appium Inspector = DevTools для мобильных. Из курса Lesson 20-21.'},
+  // cicd
+  {c:'cicd',q:'CI/CD концепция.',a:'CI: каждый push→авто-сборка→авто-тесты. CD: авто-деплой если OK. Тесты запускаются автоматически в каждом pipeline.'},
+  {c:'cicd',q:'Jenkins Pipeline структура.',a:'Stages: Checkout → Build → Test → Report → Deploy. Jenkinsfile = pipeline как код. Из курса Lesson 14, 22.'},
+  {c:'cicd',q:'Docker зачем QA.',a:'Одинаковое изолированное окружение. "Работает на моей машине" — не оправдание. Selenium Grid в Docker = параллельные тесты.'},
+  {c:'cicd',q:'Allure Reports.',a:'HTML отчёты для тестов. @Step аннотация. История запусков. Скриншоты. Из курса Lesson 9.'},
+  // bdd
+  {c:'bdd',q:'BDD — что, зачем, кому.',a:'Behaviour Driven Development. Тесты на языке бизнеса. Given/When/Then понятны Product Owner, разработчикам, тестировщикам. BDD = документация + тест в одном.'},
+  {c:'bdd',q:'Feature файл структура.',a:'Feature: Login Functionality\nScenario: Successful login\n  Given user is on "/login"\n  When enters "user@mail.com" and "pass"\n  Then sees dashboard'},
+  {c:'bdd',q:'Step Definitions — что это?',a:'@Given/@When/@Then аннотации. Java методы. Связывают текст из .feature с кодом. @When("user enters {string} and {string}") void enterCreds(String email, String pass){...}'},
+];
+
+// ==================== QUIZ ====================
+const QZ=[
+  {c:'manual',q:'Severity=Critical, Priority — какой? Краш на странице которую видят 2% пользователей.',opts:['Critical','High','Medium','Low'],ok:2,exp:'Priority = бизнес срочность. 2% пользователей = умеренная срочность. Severity Critical (критичная функция), но Priority Medium.'},
+  {c:'manual',q:'Поле возраст 18-65. BVA — обязательные значения?',opts:['18, 65','17, 18, 65, 66','0, 18, 65, 100','20, 40, 60'],ok:1,exp:'BVA: граница ±1. 17(ниже), 18(нижняя), 65(верхняя), 66(выше). Именно на границах чаще всего ошибки.'},
+  {c:'manual',q:'QA vs QC — что проактивно?',opts:['QC — проактивно','QA — проактивно','Оба одинаково','Зависит от команды'],ok:1,exp:'QA (Quality Assurance) — проактивно: настройка процессов, предотвращение дефектов. QC (Quality Control) — реактивно: тестирование готового продукта.'},
+  {c:'selenium',q:'Какой способ ожидания предпочтительнее?',opts:['Thread.sleep(5000)','driver.implicitlyWait(10s) глобально','WebDriverWait + ExpectedConditions','Без ожиданий'],ok:2,exp:'Explicit wait (WebDriverWait) ждёт конкретного условия. Точнее и надёжнее. Thread.sleep = плохо.'},
+  {c:'selenium',q:'В 2025: Cypress (65%), Playwright (55%), Selenium (?)',opts:['75%','50%','30%','80%'],ok:1,exp:'Из анализа 400 вакансий 2025: Cypress 65%, Playwright 55%, Selenium 50%. Selenium всё ещё важен, но новые инструменты обгоняют.'},
+  {c:'api',q:'POST для создания пользователя. Статус при успехе?',opts:['200 OK','201 Created','204 No Content','202 Accepted'],ok:1,exp:'201 Created: ресурс создан. 200 для GET. 204 без тела. POST → 201.'},
+  {c:'api',q:'Аутентифицирован, но нет прав на ресурс. Какой код?',opts:['401','403','404','400'],ok:1,exp:'403 Forbidden: токен есть (аутентифицирован), нет прав (не авторизован). 401: токена нет вообще.'},
+  {c:'api',q:'Postman — #1 инструмент в скольки % вакансий 2025?',opts:['40%','55%','70%','85%'],ok:2,exp:'Из анализа 400 вакансий 2025: Postman упомянут в 70% — самый популярный QA инструмент. API тестирование стало основой.'},
+  {c:'sql',q:'Фильтр групп после GROUP BY — какой оператор?',opts:['WHERE','HAVING','FILTER','GROUP FILTER'],ok:1,exp:'HAVING фильтрует группы после GROUP BY. WHERE фильтрует строки до группировки. WHERE нельзя с агрегатными функциями.'},
+  {c:'sql',q:'Найти дубликаты email — правильный запрос?',opts:['SELECT DISTINCT email FROM users','SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*)>1','SELECT email WHERE COUNT(*)>1','SELECT email FROM users ORDER BY email'],ok:1,exp:'GROUP BY группирует. COUNT(*) считает. HAVING COUNT(*)>1 оставляет дубликаты. Классика интервью!'},
+  {c:'java',q:'private для поля означает...',opts:['Доступно в пакете','Только в этом классе','Нельзя изменить','Общее для объектов'],ok:1,exp:'private = только внутри класса. Инкапсуляция. Локаторы в Helper делаем private.'},
+  {c:'bdd',q:'Given в BDD сценарии — это...',opts:['Действие пользователя','Начальное состояние системы','Ожидаемый результат','Тестовые данные'],ok:1,exp:'Given: предусловие/начальное состояние. When: действие. Then: ожидаемый результат.'},
+  {c:'mobile',q:'adb logcat делает...',opts:['Устанавливает APK','Показывает логи устройства в реальном времени','Делает скриншот','Перезагружает устройство'],ok:1,exp:'adb logcat: поток логов Android в реальном времени. Для дебаггинга падений приложения.'},
+  {c:'cicd',q:'Playwright разработан кем?',opts:['Google','Mozilla','Microsoft','Meta'],ok:2,exp:'Playwright разработан Microsoft. Именно поэтому активно интегрируется с VS Code, GitHub Actions, Azure DevOps. Тренд #1 в 2025-2026.'},
+  {c:'frontend',q:'box-sizing: border-box означает...',opts:['Добавляет border','padding и border включены в width','Убирает margin','Делает элемент flex'],ok:1,exp:'border-box: padding и border входят в указанный width. Без этого padding добавляется снаружи и элемент шире чем задано.'},
+  {c:'api',q:'Идемпотентный метод — это...',opts:['Самый быстрый','Повторный вызов даёт тот же результат','Без авторизации','С кешированием'],ok:1,exp:'Идемпотентный: повторный запрос = тот же результат. GET, PUT, DELETE — идемпотентны. POST — нет (каждый раз создаёт новый).'},
+];
+
+// ==================== CHEATSHEETS ====================
+const CS=[
+  {t:'🧪 Manual QA',c:'var(--green)',d:[
+    {k:'Test Case',v:'ID + Название + Предусловия + Шаги + Ожидаемый + Фактический + Статус + Приоритет'},
+    {k:'Bug Report',v:'ID + Заголовок(Что+Где+Когда) + Severity + Priority + Шаги + Expected + Actual + Окружение + Скриншот'},
+    {k:'Severity',v:'Critical → Major → Minor → Trivial'},
+    {k:'Priority',v:'High (сегодня) → Medium (спринт) → Low (потом)'},
+    {k:'Bug lifecycle',v:'New→Assigned→InProgress→Fixed→Retest→Closed + Rejected/Reopened/Deferred/Duplicate'},
+    {k:'BVA',v:'Поле 1-100: тестируем 0, 1, 100, 101 (граница ±1)'},
+    {k:'EP',v:'Классы: валидные/невалидные. По 1 тесту из каждого'},
+    {k:'Smoke/Regr/Sanity',v:'Smoke=5-10 критичных. Regression=все после изм. Sanity=конкретный фикс'},
+    {k:'STLC',v:'Требования→Планирование→Разработка→Setup→Выполнение→Closure'},
+    {k:'QA vs QC',v:'QA=проактивно(процессы). QC=реактивно(тестирование продукта)'},
+  ],code:null},
+  {t:'🤖 Selenium + Playwright',c:'var(--red)',d:[
+    {k:'By.id',v:'By.id("btn") — лучший, уникален'},
+    {k:'By.css',v:'By.cssSelector(".btn") | By.cssSelector("input[type=email]")'},
+    {k:'By.xpath',v:'By.xpath("//button[@type=submit]")'},
+    {k:'Explicit wait',v:'new WebDriverWait(driver,Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(locator))'},
+    {k:'WebElement ops',v:'.click() .sendKeys("text") .clear() .getText() .isDisplayed() .getAttribute("value")'},
+    {k:'findElements',v:'List<WebElement> list = driver.findElements(By.css(".item")); — пустой список если нет'},
+    {k:'Playwright',v:'page.click(".btn"); page.fill("#email","user@mail.com"); await expect(page.locator("h1")).toBeVisible();'},
+    {k:'Playwright wait',v:'Авто-ожидания! Не нужен явный wait — Playwright ждёт сам'},
+  ],code:'// VOM слои:\ndata/UserData.java  → static final EMAIL = "test@mail.com"\nmodels/User.java    → fields + fluent setters (return this)\ncore/BaseHelper     → click(By), type(By,String), isPresent(By)\nfw/UserHelper       → private final By LOCATORS + public methods\ncore/AppManager     → WebDriver + getHelper() + init() + stop()\ntests/TestBase      → @BeforeMethod init() + @AfterMethod stop()\ntests/LoginTest     → @Test { Arrange → Act → Assert }'},
+  {t:'☕ Java',c:'var(--yellow)',d:[
+    {k:'4 принципа ООП',v:'Инкапсуляция, Наследование(extends), Полиморфизм, Абстракция'},
+    {k:'Модификаторы',v:'public(везде) private(класс) protected(класс+наследники) static(без new) final(нельзя менять)'},
+    {k:'Fluent setter',v:'public User setEmail(String e){this.email=e; return this;}'},
+    {k:'Stream API',v:'.filter(n->n>0).map(n->n*2).collect(Collectors.toList())'},
+    {k:'Lambda',v:'(x)->x*2 | ()->println("hi") | (a,b)->a+b'},
+    {k:'Exception',v:'try{} catch(IOException e){e.getMessage()} finally{всегда}'},
+    {k:'String',v:'.equals() .contains() .startsWith() .split(",") .trim() .toLowerCase()'},
+  ],code:'// DataProvider пример:\n@DataProvider(name="logins")\npublic Object[][] loginData() {\n  return new Object[][] {\n    {"user@mail.com","pass1","valid"},\n    {"wrong@mail.com","bad","invalid"}\n  };\n}\n@Test(dataProvider="logins")\npublic void testLogin(String email, String pass, String type) {\n  // Arrange → Act → Assert\n}'},
+  {t:'🔌 API Testing',c:'var(--purple)',d:[
+    {k:'HTTP методы',v:'GET(читать,идемп.) POST(создать) PUT(заменить) PATCH(обновить) DELETE(удалить)'},
+    {k:'2xx',v:'200 OK | 201 Created | 202 Accepted | 204 No Content'},
+    {k:'4xx',v:'400 Bad Request | 401 Unauthorized | 403 Forbidden | 404 Not Found | 409 Conflict'},
+    {k:'5xx',v:'500 Internal | 502 Bad Gateway | 503 Unavailable'},
+    {k:'401 vs 403',v:'401=нет/просрочен токен. 403=токен есть, нет прав'},
+    {k:'Идемпотентность',v:'GET/PUT/DELETE = повторный тот же. POST = нет'},
+    {k:'RestAssured',v:'given().header("Auth","Bearer "+token).body(json).when().post("/users").then().statusCode(201)'},
+    {k:'Postman Tests',v:'pm.test("OK",()=>pm.response.to.have.status(200)); pm.expect(json.id).to.exist;'},
+  ],code:'// Postman Environment variable:\npm.environment.set("userId", pm.response.json().id);\n// Использование в следующем запросе:\n// GET {{baseUrl}}/users/{{userId}}'},
+  {t:'🗄️ SQL',c:'var(--teal)',d:[
+    {k:'SELECT',v:'SELECT * FROM users WHERE age > 18 ORDER BY name ASC LIMIT 10;'},
+    {k:'INNER JOIN',v:'SELECT u.name, o.p FROM users u JOIN orders o ON u.id = o.user_id;'},
+    {k:'LEFT JOIN',v:'SELECT u.name, o.p FROM users u LEFT JOIN orders o ON u.id = o.user_id;'},
+    {k:'GROUP BY',v:'SELECT city, COUNT(*) FROM users GROUP BY city;'},
+    {k:'HAVING',v:'...GROUP BY city HAVING COUNT(*) > 5;'},
+    {k:'Дубликаты',v:'SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1;'},
+    {k:'UPDATE/DELETE',v:'UPDATE users SET age=26 WHERE id=5; DELETE FROM users WHERE id=5; — ВСЕГДА с WHERE!'},
+  ],code:"-- Сложный запрос:\nSELECT u.name, COUNT(o.id) as orders, SUM(o.amount) as total\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nWHERE u.active = 1\nGROUP BY u.id, u.name\nHAVING COUNT(o.id) > 0\nORDER BY total DESC LIMIT 10;"},
+  {t:'🌿 Git',c:'var(--blue)',d:[
+    {k:'Workflow',v:'git pull → checkout -b branch → изменения → status → add . → commit → push → PR'},
+    {k:'git stash',v:'git stash (сохранить) | git stash pop (восстановить) | git stash list'},
+    {k:'git reset',v:'--soft HEAD~1 (отменить коммит, изменения остаются) | --hard (удалить всё)'},
+    {k:'git revert',v:'Создаёт новый коммит отменяющий последний. Безопаснее reset.'},
+    {k:'merge vs rebase',v:'merge: сохраняет историю с ветками. rebase: линейная история.'},
+  ],code:'git pull origin main\ngit checkout -b fix-login-TC042\n# изменения...\ngit status\ngit add .\ngit commit -m "fix: login button clickable TC-042"\ngit push origin fix-login-TC042\n# → Pull Request → Review → Merge'},
+  {t:'🌐 Frontend',c:'var(--orange)',d:[
+    {k:'HTML роли',v:'Семантика: header/nav/main/section/footer вместо div. SEO + доступность.'},
+    {k:'Box Model',v:'width+padding+border+margin. box-sizing:border-box включает padding+border.'},
+    {k:'Flexbox',v:'display:flex. justify-content(горизонталь). align-items(вертикаль). gap.'},
+    {k:'JS DOM',v:'querySelector(".btn") .textContent = "text" .classList.toggle("active") addEventListener("click",fn)'},
+    {k:'let/const/var',v:'const по умолчанию. let если нужно менять. var — НИКОГДА.'},
+    {k:'async/await',v:'const res = await fetch(url); const json = await res.json(); — в async функции'},
+  ],code:'// Fetch + async/await:\nasync function loadData() {\n  const res = await fetch("/api/users");\n  if (!res.ok) throw new Error("HTTP "+res.status);\n  return await res.json();\n}'},
+  {t:'🐍 Python',c:'var(--green)',d:[
+    {k:'Типы',v:'int, float, str, bool, list[], dict{}, tuple(), set{}, None'},
+    {k:'Условия',v:'if x > 5: elif x == 0: else: — двоеточие + отступ обязательны'},
+    {k:'Функции',v:'def name(param, default=val): return result'},
+    {k:'f-строки',v:'f"Hello {name}, age: {age}"'},
+    {k:'List comprehension',v:'[x*2 for x in range(10) if x > 3]'},
+    {k:'dict методы',v:'.get(key, default) .keys() .values() .items()'},
+  ],code:'# API тест:\nimport requests\n\ndef test_create_user():\n    res = requests.post("/api/users",\n        json={"name":"Alex","email":"a@b.com"},\n        headers={"Authorization": f"Bearer {TOKEN}"})\n    assert res.status_code == 201\n    assert "id" in res.json()'},
+  {t:'📱 Mobile + Appium',c:'var(--red)',d:[
+    {k:'Нативное/Гибрид/Веб',v:'Native=Swift/Kotlin, Hybrid=WebView в контейнере, Web=браузер на устройстве'},
+    {k:'ADB',v:'adb devices | adb install app.apk | adb logcat | adb shell | adb pull/push'},
+    {k:'Специфика mobile',v:'Прерывания, ориентация, жесты (swipe/pinch), батарея, offline, разные экраны'},
+    {k:'Appium',v:'UIAutomator2 (Android), XCUITest (iOS). Appium Inspector = DevTools мобильных'},
+    {k:'Локаторы',v:'By.id | By.xpath | MobileBy.accessibilityId("id")'},
+  ],code:'// Appium:\nDesiredCapabilities caps = new DesiredCapabilities();\ncaps.setCapability("platformName","Android");\ncaps.setCapability("app","/path/app.apk");\nAndroidDriver driver = new AndroidDriver(url, caps);\ndriver.findElement(By.id("login_btn")).click();'},
+  {t:'⚙️ Jenkins + Docker + CI/CD',c:'var(--purple)',d:[
+    {k:'CI/CD',v:'CI: каждый push→build→test авто. CD: авто-деплой если OK'},
+    {k:'Jenkins stages',v:'Checkout → Build → Test → Report → Deploy'},
+    {k:'Docker',v:'Image=образ. Container=запущенный. Dockerfile=инструкции сборки'},
+    {k:'docker команды',v:'docker build -t myapp . | docker run myapp | docker ps | docker stop id'},
+    {k:'Selenium Grid',v:'Hub + Nodes. Параллельный запуск: Chrome+Firefox+Edge одновременно'},
+    {k:'Allure',v:'HTML отчёты. @Step аннотация. История. Скриншоты.'},
+  ],code:'// Jenkinsfile:\npipeline {\n  stages {\n    stage("Test") {\n      steps { sh "mvn test" }\n    }\n    stage("Report") {\n      steps { allure results: [[path:"target/allure-results"]] }\n    }\n  }\n}'},
+  {t:'🎭 BDD + Cucumber',c:'var(--orange)',d:[
+    {k:'BDD',v:'Behavior Driven Development. Тесты на Gherkin — понятны бизнесу и команде'},
+    {k:'Gherkin',v:'Feature + Scenario + Given + When + Then + And + But'},
+    {k:'Step Definitions',v:'@Given/@When/@Then аннотации. Связывают текст с Java кодом'},
+    {k:'Scenario Outline',v:'Параметризованный сценарий. Examples: таблица данных'},
+    {k:'Tags',v:'@smoke @regression @login — для запуска subset сценариев'},
+    {k:'Hooks',v:'@Before/@After для setup/teardown в Cucumber'},
+  ],code:'// .feature:\nFeature: Login\n  @smoke\n  Scenario: Valid login\n    Given user is on "/login"\n    When enters "user@mail.com" and "pass"\n    Then sees dashboard\n\n// Step:\n@When("enters {string} and {string}")\npublic void enterCreds(String e, String p) {\n    app.getUser().fillForm(e, p);\n}'},
+];
+
+// ==================== SCRIPTS ====================
+const SCR=[
+  {t:'"Tell me about yourself" 60 сек',c:'var(--blue)',l:'RU/EN/DE',
+   txt:'<b>RU:</b> Меня зовут Серджар. Junior QA Engineer. Прошёл 6-месячный DEKRA-сертифицированный курс QA в AIT TR GmbH — мануальное и автоматизированное тестирование: Selenium/Java, Postman, JIRA, SQL. Практика в UpTeam GmbH — реальные проекты в команде. До этого 5+ лет в IT-администрировании и кибербезопасности. Ищу первую Junior QA позицию.<br><br><b>DE:</b> Ich bin Serdar, Junior QA Engineer. Ich habe eine 6-monatige DEKRA-zertifizierte QA-Weiterbildung bei AIT TR GmbH abgeschlossen — manuelles und automatisiertes Testen mit Selenium, Java, Postman und SQL. Im Rahmen der Betrieblichen Lernphase bei UpTeam GmbH habe ich an realen Projekten gearbeitet. Davor hatte ich 5+ Jahre in IT-Administration und Cybersecurity.<br><br><b>EN:</b> I\'m Serdar, Junior QA Engineer. DEKRA-certified 6-month QA training at AIT TR GmbH covering manual and automation testing. Practical work at UpTeam GmbH on real projects. Previously 5+ years in IT administration and cybersecurity.'},
+  {t:'Что такое UpTeam?',c:'var(--yellow)',l:'RU/EN/DE',
+   txt:'<b>RU:</b> UpTeam GmbH — компания-партнёр нашей школы AIT TR GmbH. В рамках <em>Betriebliche Lernphase</em> — практической части DEKRA-курса — я работал в команде над реальными проектами: тест-кейсы, баг-репорты, Selenium+Java автоматизация, Postman API тесты, JIRA + Scrum.<br><br><b>DE:</b> UpTeam GmbH ist der Praxispartner unserer Schule. Im Rahmen der <em>Betrieblichen Lernphase</em> habe ich in Teams an echten Projekten gearbeitet: Testfälle, Bug-Reports, Selenium-Automatisierung, Postman-API-Tests, JIRA und Scrum.<br><br>💡 <em>Если спросят про контракт: "Betriebliche Lernphase — официальная часть DEKRA-сертифицированной программы обучения."</em>'},
+  {t:'"Почему QA, не разработка?"',c:'var(--purple)',l:'RU',
+   txt:'"Три причины.<br><br>Первое: QA сочетает аналитику и технические навыки. Я думаю «что может пойти не так?» — не «как реализовать?»<br><br>Второе: мой фон в кибербезопасности органично переходит в QA. Я понимаю протоколы, системы изнутри. Редкость для junior.<br><br>Третье: автоматизация тестирования — это настоящее программирование с реальным impact для команды."<br><br><em>Не говори: "разработка сложнее" или "зарплата устраивает". Говори про ценность QA для продукта.</em>'},
+  {t:'"Баг перед релизом — что делаешь?"',c:'var(--red)',l:'EN/DE',
+   txt:'<b>EN:</b> First — document clearly in JIRA: reproduction steps, severity, expected vs actual, screenshots. Then immediately notify team lead and developer. We assess together: release-blocker or known issue? Critical → block release. Minor → document as known issue, fix next sprint. Decision is never mine alone — team + Product Owner.<br><br><b>DE:</b> Zuerst dokumentiere ich klar in JIRA: Schritte, Severity, Screenshots. Dann sofort Team Lead und Entwickler informieren. Gemeinsam: Release-Blocker? Critical=kein Release. Minor=Known Issue, nächster Sprint.<br><br><em>Ключ: решение командное, на основе данных, не единолично.</em>'},
+  {t:'"Разработчик говорит — не баг"',c:'var(--green)',l:'RU',
+   txt:'"Три шага:<br><b>1.</b> Проверяю Requirements/User Story. Если поведение должно быть другим — это баг. Показываю конкретный пункт.<br><b>2.</b> Если требования неясны — подключаю Product Owner. Они говорят про бизнес ожидания.<br><b>3.</b> Если разработчик прав — закрываю как Not a Bug, документирую.<br><br><em>Принцип: решение на основе требований. QA и Dev — одна команда, не противники.</em>'},
+  {t:'Зарплатные ожидания DE 2026',c:'var(--yellow)',l:'RU/DE',
+   txt:'<b>Рынок DE 2026:</b><br>• Chemnitz/Sachsen: €38k–€44k<br>• Leipzig/Dresden: €40k–€46k<br>• Berlin стартапы: €42k–€52k<br>• München/Frankfurt: €46k–€56k<br><br><b>DE:</b> "Ich orientiere mich am Marktstandard für Junior QA in der Region — zwischen 40.000 und 45.000 Euro brutto jährlich. Ich bin offen für Verhandlung abhängig vom Gesamtpaket."<br><br><b>RU:</b> "40-45 тысяч евро брутто в год, ориентируясь на рынок. Готов обсуждать в зависимости от полного пакета."<br><br><em>💡 Называй диапазон. Упоминай открытость — это профессионально.</em>'},
+];
+
+// ==================== CHECKLIST ====================
+const CL=[
+  {id:'c1',p:'🔴 КРИТИЧНО',t:'Tell me about yourself — речь 60 секунд наизусть'},
+  {id:'c2',p:'🔴 КРИТИЧНО',t:'Объяснить UpTeam — Betriebliche Lernphase (3 предложения)'},
+  {id:'c3',p:'🔴 КРИТИЧНО',t:'Implicit vs Explicit wait — разница без подсказки'},
+  {id:'c4',p:'🔴 КРИТИЧНО',t:'POM/VOM — что, зачем, структура своими словами'},
+  {id:'c5',p:'🔴 КРИТИЧНО',t:'Bug lifecycle — все статусы по памяти (8 штук)'},
+  {id:'c6',p:'🔴 КРИТИЧНО',t:'Severity vs Priority — разница + 2 примера'},
+  {id:'c7',p:'🔴 КРИТИЧНО',t:'Статус коды 200/201/204/400/401/403/404/500'},
+  {id:'c8',p:'🔴 КРИТИЧНО',t:'BVA на примере поля возраст 18-65'},
+  {id:'c9',p:'🟡 ВАЖНО',t:'Типы локаторов — порядок предпочтения + почему id лучший'},
+  {id:'c10',p:'🟡 ВАЖНО',t:'TestNG: @Test, @BeforeMethod, @AfterMethod, @DataProvider'},
+  {id:'c11',p:'🟡 ВАЖНО',t:'SQL: SELECT + WHERE + JOIN + GROUP BY + HAVING — написать'},
+  {id:'c12',p:'🟡 ВАЖНО',t:'HTTP методы + идемпотентность'},
+  {id:'c13',p:'🟡 ВАЖНО',t:'Regression vs Smoke vs Sanity — разница'},
+  {id:'c14',p:'🟡 ВАЖНО',t:'Java: 4 принципа ООП своими словами'},
+  {id:'c15',p:'🟡 ВАЖНО',t:'QA vs QC — разница'},
+  {id:'c16',p:'🟡 ВАЖНО',t:'Given/When/Then (BDD) — пример сценария'},
+  {id:'c17',p:'🟡 ВАЖНО',t:'CI/CD — объяснить что это в 2 предложениях'},
+  {id:'c18',p:'🟡 ВАЖНО',t:'Verification vs Validation — разница'},
+  {id:'c19',p:'🟢 ХОРОШО',t:'Playwright vs Selenium — тренды 2025, почему Playwright растёт'},
+  {id:'c20',p:'🟢 ХОРОШО',t:'GitHub: 3 проекта + README оформлены'},
+  {id:'c21',p:'🟢 ХОРОШО',t:'Docker — объяснить зачем QA (2 предложения)'},
+  {id:'c22',p:'🟢 ХОРОШО',t:'ADB: adb devices, adb install, adb logcat — что делают'},
+  {id:'c23',p:'🟢 ХОРОШО',t:'Mock interview у Kristina — попросить сегодня'},
+  {id:'c24',p:'🟢 ХОРОШО',t:'LinkedIn: AIT TR + UpTeam обновлены'},
+];
+
+// ==================== APP STATE ====================
+let qzCat='all', qzIdx=0, qzScore=0, qzList=[];
+let chkDone={};
+
+// ==================== INIT ====================
+window.addEventListener('DOMContentLoaded',()=>{
+  try{ chkDone=JSON.parse(localStorage.getItem('qa_chk')||'{}'); }catch(e){}
+  renderTop10(); renderSkills(); renderCompanies();
+  renderFCPills(); renderFC('all');
+  renderQZPills(); startQZ('all');
+  renderCS(); renderSCR(); renderCL(); renderMarket();
+  updateProg();
+  // animate salary bars on market open
+  document.querySelector('.nb[onclick="go(\'market\')"]').addEventListener('click',()=>{
+    setTimeout(()=>{document.querySelectorAll('.sal-fill').forEach(f=>{const w=f.dataset.w;if(w)f.style.width=w+'%';});},100);
+  });
+});
+
+// ==================== TOP10 ====================
+function renderTop10(){
+  document.getElementById('top10Grid').innerHTML=TOP10.map((g,i)=>`
+    <div class="t10-card">
+      <div class="t10-hdr" onclick="toggleT(${i})" style="border-left-color:${g.color}">
+        ${g.cat}<span id="ta${i}" class="cs-arr">▶</span>
+      </div>
+      <div class="t10-body" id="tb${i}">
+        ${g.qs.map(q=>`
+          <div class="dq">
+            <div class="dq-q"><span class="fbadge ${q.f==='HOT'?'fhot':q.f==='TREND'?'ftrend':'fclassic'}">${q.f}</span>${q.q}</div>
+            <div class="dq-a">${q.a}</div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleT(i){
+  const b=document.getElementById(`tb${i}`),a=document.getElementById(`ta${i}`);
+  b.classList.toggle('on'); a.style.transform=b.classList.contains('on')?'rotate(90deg)':'rotate(0deg)';
+}
+
+// ==================== SKILLS ====================
+function renderSkills(){
+  document.getElementById('skillsGrid').innerHTML=SKILLS.map(s=>`
+    <div class="skill-card" style="border-left-color:${s.color}">
+      <div class="skill-title">${s.title}</div>
+      ${s.items.map(item=>`
+        <div class="skill-item">
+          <span class="skill-badge ${item.l==='MUST'?'must':item.l==='SHOULD'?'should':item.l==='PLUS'?'plus':'wow'}">${item.l}</span>
+          <div>
+            <div style="font-weight:600;font-size:12px">${item.t}</div>
+            <div style="font-size:11px;color:var(--text2)">${item.d||''}</div>
+          </div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+// ==================== COMPANIES ====================
+function showCompTab(tab, btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById(`tc-${tab}`).classList.add('on');
+}
+
+function renderCompanies(){
+  Object.entries(COMPANIES).forEach(([region, comps])=>{
+    document.getElementById(`comp-${region}`).innerHTML = comps.map(c=>`
+      <div class="comp-card">
+        <div class="comp-hdr">
+          <span class="comp-flag">${c.flag}</span>
+          <div>
+            <div class="comp-name">${c.name}</div>
+            <div class="comp-type">${c.type} · ${c.pay}</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:6px">${c.desc}</div>
+        <div style="font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:4px">Спрашивают: <span style="color:var(--text2)">${c.asks}</span></div>
+        <div class="comp-tags">${c.tags.map(t=>`<span class="ctag">${t}</span>`).join('')}</div>
+      </div>`).join('');
+  });
+}
+
+// ==================== FLASHCARDS ====================
+const FCCATS=[
+  {id:'all',l:'Все'},{id:'manual',l:'🧪 Manual'},{id:'selenium',l:'🤖 Selenium'},
+  {id:'java',l:'☕ Java'},{id:'api',l:'🔌 API'},{id:'sql',l:'🗄️ SQL'},
+  {id:'git',l:'🌿 Git'},{id:'frontend',l:'🌐 Frontend'},{id:'python',l:'🐍 Python'},
+  {id:'mobile',l:'📱 Mobile'},{id:'cicd',l:'⚙️ CI/CD'},{id:'bdd',l:'🎭 BDD'},
+];
+function renderFCPills(){
+  document.getElementById('fcPills').innerHTML=FCCATS.map((c,i)=>`
+    <button class="pill${i===0?' on':''}" onclick="fcPill('${c.id}',this)">${c.l}</button>`).join('');
+}
+function fcPill(cat,btn){
+  document.querySelectorAll('#fcPills .pill').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); renderFC(cat);
+}
+function renderFC(cat){
+  const list=cat==='all'?FC:FC.filter(f=>f.c===cat);
+  document.getElementById('fcCount').textContent=`Показано: ${list.length} вопросов`;
+  document.getElementById('fcGrid').innerHTML=list.map(f=>`
+    <div class="fc" onclick="this.classList.toggle('open');this.classList.toggle('fc-open')">
+      <div class="fc-q">
+        <div><div class="fc-cat">${f.c.toUpperCase()}</div><div class="fc-qtxt">${f.q}</div></div>
+        <div class="fc-hint">👆 нажми — ответ</div>
+      </div>
+      <div class="fc-a">${f.a}</div>
+    </div>`).join('');
+}
+
+// ==================== QUIZ ====================
+const QZCATS=[{id:'all',l:'Все'},{id:'manual',l:'Manual'},{id:'selenium',l:'Selenium'},{id:'api',l:'API'},{id:'sql',l:'SQL'},{id:'java',l:'Java'},{id:'bdd',l:'BDD'},{id:'mobile',l:'Mobile'},{id:'cicd',l:'CI/CD'},{id:'frontend',l:'Frontend'}];
+function renderQZPills(){
+  document.getElementById('qzPills').innerHTML=QZCATS.map((c,i)=>`
+    <button class="pill${i===0?' on':''}" onclick="qzPill('${c.id}',this)">${c.l}</button>`).join('');
+}
+function qzPill(cat,btn){
+  document.querySelectorAll('#qzPills .pill').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); startQZ(cat);
+}
+function startQZ(cat){
+  qzCat=cat; qzList=(cat==='all'?[...QZ]:QZ.filter(q=>q.c===cat)).sort(()=>Math.random()-.5);
+  qzIdx=0; qzScore=0; renderQZ();
+}
+function renderQZ(){
+  const a=document.getElementById('qzArea');
+  if(qzIdx>=qzList.length){
+    const p=Math.round(qzScore/qzList.length*100);
+    a.innerHTML=`<div class="qz-score"><span class="score-big">${p}%</span><div style="margin-top:8px;font-size:15px">${p>=80?'🎉':p>=60?'👍':'📚'} ${qzScore} из ${qzList.length}</div><div style="color:var(--text2);font-size:12px;margin-top:5px">${p>=80?'Отлично! Готов к интервью':p>=60?'Хорошо, повтори слабые места':'Нужно больше практики'}</div><button class="qz-restart" onclick="startQZ('${qzCat}')">🔄 Ещё раз</button></div>`;
+    return;
+  }
+  const q=qzList[qzIdx];
+  a.innerHTML=`<div class="qz-meta"><span>Вопрос ${qzIdx+1}/${qzList.length}</span><span>✅ ${qzScore}</span></div><div class="qz-q">${q.q}</div><div class="qz-opts">${q.opts.map((o,i)=>`<button class="qz-opt" id="o${i}" onclick="ansQZ(${i})"><span class="qz-ltr">${'ABCD'[i]}</span>${o}</button>`).join('')}</div><div class="qz-exp" id="qe">${q.exp}</div><button class="qz-next" id="qn" onclick="nextQZ()">Следующий →</button>`;
+}
+function ansQZ(ch){
+  const q=qzList[qzIdx];
+  document.querySelectorAll('.qz-opt').forEach((b,i)=>{b.disabled=true;if(i===q.ok)b.classList.add('ok');else if(i===ch)b.classList.add('no');});
+  if(ch===q.ok) qzScore++;
+  document.getElementById('qe').classList.add('show');
+  document.getElementById('qn').classList.add('show');
+}
+function nextQZ(){qzIdx++;renderQZ();}
+
+// ==================== CHEATSHEET ====================
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function renderCS(){
+  document.getElementById('cheatArea').innerHTML=CS.map((s,i)=>`
+    <div class="cs-block">
+      <div class="cs-hdr" id="ch${i}" onclick="toggleCS(${i})" style="border-left-color:${s.c}">
+        ${s.t}<span class="cs-arr" id="ca${i}">▶</span>
+      </div>
+      <div class="cs-body" id="cb${i}">
+        ${s.d.map(d=>`<div class="def"><div class="def-k">${d.k}</div><div class="def-v">${d.v}</div></div>`).join('')}
+        ${s.code?`<div class="code">${esc(s.code)}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+function toggleCS(i){
+  const b=document.getElementById(`cb${i}`),a=document.getElementById(`ca${i}`);
+  b.classList.toggle('on'); a.style.transform=b.classList.contains('on')?'rotate(90deg)':'rotate(0deg)';
+}
+
+// ==================== SCRIPTS ====================
+function renderSCR(){
+  document.getElementById('scriptsArea').innerHTML=SCR.map(s=>`
+    <div class="scr" style="border-color:${s.c}">
+      <div class="scr-lbl">${s.t}<span style="color:var(--text2)">${s.l}</span></div>
+      <div class="scr-txt">${s.txt}</div>
+    </div>`).join('');
+}
+
+// ==================== CHECKLIST ====================
+function renderCL(){
+  const done=CL.filter(i=>chkDone[i.id]).length;
+  const pct=Math.round(done/CL.length*100);
+  document.getElementById('chkArea').innerHTML=`
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:5px">
+        <span>Прогресс подготовки</span><span style="font-family:'JetBrains Mono',monospace">${done}/${CL.length} (${pct}%)</span>
+      </div>
+      <div class="prog-track" style="height:8px"><div class="prog-fill" style="width:${pct}%"></div></div>
+    </div>
+    ${CL.map(item=>`
+      <div class="cl-item${chkDone[item.id]?' done':''}" onclick="toggleCL('${item.id}')">
+        <div class="cl-box"></div>
+        <div class="cl-txt"><div class="cl-pri" style="color:${item.p.includes('🔴')?'var(--red)':item.p.includes('🟡')?'var(--yellow)':'var(--green)'}">${item.p}</div>${item.t}</div>
+      </div>`).join('')}`;
+}
+function toggleCL(id){
+  chkDone[id]=!chkDone[id];
+  try{localStorage.setItem('qa_chk',JSON.stringify(chkDone));}catch(e){}
+  renderCL(); updateProg();
+}
+function updateProg(){
+  const done=CL.filter(i=>chkDone[i.id]).length;
+  const pct=Math.round(done/CL.length*100);
+  document.getElementById('pFill').style.width=pct+'%';
+  document.getElementById('pTxt').textContent=`${done}/${CL.length}`;
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sPct').textContent=pct+'%';
+}
+
+// ==================== MARKET ====================
+function renderMarket(){
+  document.getElementById('marketArea').innerHTML=`
+    <div style="background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2);border-radius:10px;padding:12px;margin-bottom:10px">
+      <div style="font-weight:700;font-size:13px;color:var(--blue);margin-bottom:6px">📊 Реальный анализ рынка 2025-2026</div>
+      <div style="font-size:12px;line-height:1.7;color:var(--text2)">
+        Данные из <b style="color:var(--text)">400 QA вакансий</b> + <b style="color:var(--text)">855 Glassdoor интервью</b> + треды Linkedin/Medium 2025:<br>
+        • Postman <b style="color:var(--text)">70%</b> вакансий — самый популярный инструмент<br>
+        • Cypress <b style="color:var(--text)">65%</b> | Playwright <b style="color:var(--text)">55%</b> | Selenium <b style="color:var(--text)">50%</b><br>
+        • Selenium: всё ещё в 31,000+ компаниях. <b style="color:var(--yellow)">Знать обязательно!</b><br>
+        • Playwright: <b style="color:var(--green)">БЫСТРЕЙШИЙ рост</b> — от Microsoft, авто-ожидания, кросс-браузер<br>
+        • CI/CD <b style="color:var(--text)">60%</b> вакансий — интеграция тестов в pipeline критична
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:9px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:11px">🔧 Тренды инструментов (2025)</div>
+      ${[['Postman (API тестирование)','70%',70,'var(--purple)'],['Cypress','65%',65,'var(--orange)'],['Playwright','55%',55,'var(--blue)'],['Selenium WebDriver','50%',50,'var(--red)'],['Jenkins / GitHub Actions CI','60%',60,'var(--yellow)'],['Docker','45%',45,'var(--green)']].map(([n,v,w,c])=>`
+        <div class="sal"><div class="sal-lbl"><span style="font-size:12px">${n}</span><span style="color:var(--text);font-weight:700">${v}</span></div><div class="sal-bar"><div class="sal-fill" style="width:${w}%;background:${c}"></div></div></div>`).join('')}
+    </div>
+
+    <div class="card" style="margin-bottom:9px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:11px">💰 Зарплаты Junior QA — DE 2026</div>
+      ${[['Chemnitz / Sachsen','€38k–€44k',60,'var(--green)'],['Leipzig / Dresden','€40k–€46k',68,'var(--blue)'],['Berlin (стартапы)','€42k–€52k',78,'var(--blue)'],['München / Frankfurt','€46k–€56k',90,'var(--purple)'],['Remote EU','€40k–€55k',75,'var(--yellow)']].map(([n,v,w,c])=>`
+        <div class="sal"><div class="sal-lbl"><span style="font-size:12px">${n}</span><span style="color:var(--text);font-weight:700">${v}</span></div><div class="sal-bar"><div class="sal-fill" style="width:${w}%;background:${c}"></div></div></div>`).join('')}
+    </div>
+
+    <div class="card" style="margin-bottom:9px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:10px">🎯 ATS ключевые слова — вставь в CV</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">
+        ${['Selenium WebDriver','Java OOP','TestNG','JUnit','Postman','REST API','JIRA','SQL','Git','Jenkins','GitHub Actions','Agile','Scrum','POM','VOM','Fiddler','BDD','Cucumber','Selenide','RestAssured','Docker','CI/CD','Appium','Manual Testing','Test Cases','Bug Reports','STLC','Regression','Smoke Testing','Black Box','White Box','Decision Tables','Playwright','Cypress'].map(k=>`<span style="background:rgba(88,166,255,.12);color:var(--blue);padding:2px 7px;border-radius:4px;font-size:10.5px;font-family:'JetBrains Mono',monospace">${k}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:9px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:10px">🏆 Твои преимущества перед конкурентами</div>
+      ${[['🔐','Cybersecurity + Networking фон','Редкость! Большинство джунов не знают TCP/IP, VPN, firewalls. Это = дополнительный +.'],['📜','DEKRA сертификат','Признанная квалификация в Германии. Не просто "прошёл курс".'],['🇩🇪','Немецкий B1 (активно учишь)','В 60%+ DE компаний нужен немецкий. Многие IT джуны его игнорируют.'],['🌍','5 языков (TKM/RU/TR/EN/DE)','В берлинских международных командах — выделяет немедленно.'],['💻','UpTeam — реальный проект','Не просто теория. Командная работа с реальными задачами.'],['⚡','Полный стек: Manual+Auto+API+Mobile+BDD','Большинство джунов знают только одно-два направления.']].map(([em,t,d])=>`
+        <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12.5px;align-items:flex-start">
+          <span style="font-size:18px;width:24px;flex-shrink:0;margin-top:1px">${em}</span>
+          <div><div style="font-weight:700;margin-bottom:2px">${t}</div><div style="color:var(--text2);font-size:11.5px">${d}</div></div>
+        </div>`).join('')}
+    </div>
+
+    <div class="card" style="margin-bottom:9px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:10px">📍 Где искать работу (DE + EU)</div>
+      ${[['LinkedIn','linkedin.com/jobs — Junior QA Engineer, Germany, Entry Level. Самый важный!'],['Stepstone','stepstone.de — лучший DE агрегатор. Немецкоязычные компании.'],['Xing','xing.com — DACH регион. Mittlere Unternehmen.'],['Arbeitnow','arbeitnow.com — IT вакансии, Visa sponsorship'],['Indeed DE','indeed.de — международные + локальные'],['Glassdoor','glassdoor.de — смотри зарплаты + отзывы перед собесом'],['remote.co / Remotive','Remote EU позиции'],['Techloop / EuroSoftware','Специализированные EU tech рекрутеры']].map(([n,d])=>`
+        <div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <span style="color:var(--blue);font-weight:700">${n}</span>
+          <span style="color:var(--text2);margin-left:7px;font-size:11.5px">${d}</span>
+        </div>`).join('')}
+    </div>
+
+    <div class="card">
+      <div style="font-weight:700;font-size:13px;margin-bottom:10px">📅 Что убрать, что добавить в подготовку</div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--red);font-weight:700;margin-bottom:5px">❌ УБРАТЬ из приоритета (устарело/менее актуально)</div>
+        ${['VOM архитектура — знать, но не тратить много времени (специфика курса)','Thread.sleep() — знать что плохо, но не изучать','Теория без практики — меньше читать, больше писать код'].map(i=>`<div style="font-size:12px;color:var(--text2);padding:2px 0">• ${i}</div>`).join('')}
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--yellow);font-weight:700;margin-bottom:5px">🔄 ДОБАВИТЬ в ближайшее время</div>
+        ${['Playwright основы (TypeScript) — самый быстрорастущий инструмент 2025-2026','GitHub Actions — альтернатива Jenkins, проще для junior','API автотесты (RestAssured или Playwright API) — в 70% вакансий','Cypress базовый синтаксис — понять концепцию'].map(i=>`<div style="font-size:12px;color:var(--text2);padding:2px 0">• ${i}</div>`).join('')}
+      </div>
+      <div>
+        <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:700;margin-bottom:5px">✅ ТЕКУЩИЙ СТЕК — всё ещё актуально</div>
+        ${['Selenium + Java + TestNG — enterprise стандарт, 50% вакансий','Postman — #1 инструмент, 70% вакансий','SQL — 70% вакансий требуют','BDD/Cucumber — в DE очень популярно','Docker + Jenkins — CI/CD базис'].map(i=>`<div style="font-size:12px;color:var(--text2);padding:2px 0">• ${i}</div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+</script>
+</body></html>
